@@ -98,7 +98,7 @@ chrome.storage.onChanged.addListener((changes, area) => {
   }
 });
 
-// Кнопки
+
 document.getElementById("checkUpdate").onclick = () => {
   document.getElementById("updateStatus").textContent = "Checking…";
   chrome.runtime.sendMessage({ type: "checkForUpdates" });
