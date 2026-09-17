@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Welcome to YouTube Feed Filter</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+      color: #eee;
+      padding: 24px;
+    }
+
+    .card {
+      max-width: 560px;
+      width: 100%;
+      background: #1c1c1c;
+      border: 1px solid #2a2a2a;
+      border-radius: 16px;
+      padding: 40px 36px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      animation: fadeIn .5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .logo {
+      font-size: 56px;
+      margin-bottom: 12px;
+      filter: drop-shadow(0 4px 12px rgba(255, 0, 0, 0.4));
+    }
+
+    h1 {
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      background: linear-gradient(90deg, #ff0000, #ff5555);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      color: #aaa;
+      font-size: 14px;
+      margin-bottom: 28px;
+    }
+
+    .features {
+      text-align: left;
+      background: #151515;
+      border-radius: 12px;
+      padding: 20px 22px;
+      margin-bottom: 28px;
+      border: 1px solid #262626;
+    }
+
+    .features h2 {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #888;
+      margin-bottom: 14px;
+    }
+
+    .feature {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 8px 0;
+      font-size: 14px;
+      color: #ddd;
+    }
+
+    .feature .icon {
+      font-size: 18px;
+      flex-shrink: 0;
+      width: 24px;
+      text-align: center;
+    }
+
+    .feature b { color: #fff; }
+
+    .feedback {
+      background: #201a1a;
+      border: 1px solid #3a2020;
+      border-radius: 12px;
+      padding: 16px 18px;
+      margin-bottom: 28px;
+      font-size: 13px;
+      color: #ccc;
+      line-height: 1.5;
+    }
+
+    .feedback a {
+      color: #ff5555;
+      text-decoration: none;
+      font-weight: 600;
+      word-break: break-all;
+    }
+
+    .feedback a:hover { text-decoration: underline; }
+
+    .btn {
+      display: inline-block;
+      width: 100%;
+      padding: 14px 20px;
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      background: #ff0000;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform .15s, background .15s;
+      text-decoration: none;
+      text-align: center;
+    }
+
+    .btn:hover {
+      background: #cc0000;
+      transform: translateY(-1px);
+    }
+
+    .btn:active { transform: translateY(0); }
+
+    .footer {
+      margin-top: 18px;
+      font-size: 11px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">🎬</div>
+    <h1>Welcome to YouTube Feed Filter</h1>
+    <p class="subtitle">Thanks for installing! Here's what you can do:</p>
+
+    <div class="features">
+      <h2>Features</h2>
+
+      <div class="feature">
+        <span class="icon">🚫</span>
+        <div>Hide videos by <b>category</b> — games, sports, politics, music and more</div>
+      </div>
+
+      <div class="feature">
+        <span class="icon">🌍</span>
+        <div>Hide videos by <b>language</b> — Russian, English</div>
+      </div>
+
+      <div class="feature">
+        <span class="icon">📐</span>
+        <div>Adjust <b>video size</b> — from tiny grid to cinema mode</div>
+      </div>
+
+      <div class="feature">
+        <span class="icon">🔤</span>
+        <div>Add your own <b>custom keywords</b> to block</div>
+      </div>
+
+      <div class="feature">
+        <span class="icon">🔄</span>
+        <div>Automatic <b>updates</b> from GitHub</div>
+      </div>
+    </div>
+
+    <div class="feedback">
+      💡 Found a bug or have an idea?<br>
+      Send it here:
+      <a href="https://github.com/Yrashka200/youtube-fliter/issues"
+         target="_blank" rel="noopener">
+        github.com/Yrashka200/youtube-fliter/issues
+      </a>
+    </div>
+
+    <button class="btn" id="startBtn">Get Started →</button>
+
+    <div class="footer">YouTube Feed Filter v<span id="ver">…</span></div>
+  </div>
+
+  <script src="welcome.js"></script>
+</body>
+</html>

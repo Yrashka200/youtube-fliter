@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "YouTube Feed Filter",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Filter YouTube recommendations by topic, language and customize video size",
   "permissions": ["storage", "activeTab", "alarms", "notifications"],
   "host_permissions": [
@@ -23,6 +23,12 @@
       "js": ["content.js"],
       "css": ["styles.css"],
       "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["welcome.html", "welcome.js"],
+      "matches": ["<all_urls>"]
     }
   ]
 }
