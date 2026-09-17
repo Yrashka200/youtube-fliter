@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "YouTube Feed Filter",
+  "version": "1.1.0",
+  "description": "Filter YouTube recommendations by topic, language and customize video size",
+  "permissions": ["storage", "activeTab", "alarms", "notifications"],
+  "host_permissions": [
+    "*://*.youtube.com/*",
+    "https://api.github.com/*",
+    "https://github.com/*",
+    "https://raw.githubusercontent.com/*",
+    "https://codeload.github.com/*"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.youtube.com/*"],
+      "js": ["content.js"],
+      "css": ["styles.css"],
+      "run_at": "document_idle"
+    }
+  ]
+}

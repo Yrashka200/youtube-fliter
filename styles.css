@@ -1,0 +1,27 @@
+
+html[data-yt-size="small"] ytd-rich-grid-renderer {
+  --ytd-rich-grid-items-per-row: 6 !important;
+}
+html[data-yt-size="small"] ytd-rich-grid-media #thumbnail,
+html[data-yt-size="small"] ytd-rich-item-renderer #thumbnail {
+  border-radius: 8px;
+}
+
+
+html[data-yt-size="medium"] ytd-rich-grid-renderer {
+  --ytd-rich-grid-items-per-row: 4 !important;
+}
+
+
+html[data-yt-size="large"] ytd-rich-grid-renderer {
+  --ytd-rich-grid-items-per-row: 2 !important;
+}
+
+
+html[data-yt-size="cinema"] ytd-rich-grid-renderer {
+  --ytd-rich-grid-items-per-row: 1 !important;
+  --ytd-rich-grid-item-max-width: 1200px !important;
+}
+html[data-yt-size="cinema"] ytd-rich-grid-media #thumbnail {
+  border-radius: 16px;
+}

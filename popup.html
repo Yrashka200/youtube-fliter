@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    body {
+      width: 320px;
+      font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+      margin: 0;
+      padding: 16px;
+      background: #181818;
+      color: #eee;
+    }
+    h2 { margin: 0 0 12px; font-size: 16px; color: #ff0000; }
+    h3 { font-size: 12px; text-transform: uppercase; color: #aaa; margin: 16px 0 8px; letter-spacing: 0.5px; }
+    label { display: flex; align-items: center; gap: 8px; padding: 6px 0; font-size: 13px; cursor: pointer; }
+    input[type="checkbox"] { accent-color: #ff0000; width: 16px; height: 16px; cursor: pointer; }
+    select, input[type="text"] {
+      width: 100%; padding: 8px; background: #2a2a2a; color: #eee;
+      border: 1px solid #444; border-radius: 6px; font-size: 13px; box-sizing: border-box;
+    }
+    button {
+      width: 100%; padding: 10px; margin-top: 12px;
+      background: #ff0000; color: white; border: none;
+      border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 13px;
+    }
+    button:hover { background: #cc0000; }
+    button.secondary { background: #333; }
+    button.secondary:hover { background: #444; }
+    .row { display: flex; gap: 8px; }
+    .row input { flex: 1; }
+    .row button { width: auto; margin-top: 0; padding: 8px 12px; }
+    .switch { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; font-size: 14px; }
+    .switch input { width: 36px; height: 18px; accent-color: #ff0000; cursor: pointer; }
+    .keywords { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .kw {
+      background: #333; padding: 4px 8px; border-radius: 12px;
+      font-size: 11px; display: flex; align-items: center; gap: 6px;
+    }
+    .kw span { cursor: pointer; color: #ff6666; font-weight: bold; }
+    .hint { font-size: 11px; color: #777; margin-top: 4px; }
+
+    /* Update box */
+    #updateBox {
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 12px;
+      background: #1f1f1f;
+      transition: border-color .2s;
+    }
+    #updateBox .top {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 12px; margin-bottom: 6px;
+    }
+    #versionInfo { color: #888; }
+    #updateStatus { font-size: 12px; margin-bottom: 6px; }
+    #updateBox .btns { display: flex; gap: 6px; }
+    #updateBox button {
+      margin-top: 0; padding: 6px 10px; font-size: 12px; flex: 1;
+    }
+  </style>
+</head>
+<body>
+  <h2>🎬 YouTube Feed Filter</h2>
+
+  <!-- ===== UPDATE BOX ===== -->
+  <div id="updateBox">
+    <div class="top">
+      <strong>Updates</strong>
+      <span id="versionInfo">v…</span>
+    </div>
+    <div id="updateStatus">Checking for updates…</div>
+    <div class="btns">
+      <button id="checkUpdate" class="secondary">Check now</button>
+      <button id="updateBtn" style="display:none;">⬇ Download update</button>
+    </div>
+  </div>
+
+  <div class="switch">
+    <span>Enable filter</span>
+    <input type="checkbox" id="enabled" />
+  </div>
+
+  <h3>Hide categories</h3>
+  <label><input type="checkbox" data-cat="games" /> 🎮 Games</label>
+  <label><input type="checkbox" data-cat="sports" /> ⚽ Sports</label>
+  <label><input type="checkbox" data-cat="politics" /> 🏛 Politics</label>
+  <label><input type="checkbox" data-cat="music" /> 🎵 Music</label>
+  <label><input type="checkbox" data-cat="news" /> 📰 News</label>
+  <label><input type="checkbox" data-cat="movies" /> 🎥 Movies</label>
+  <label><input type="checkbox" data-cat="tech" /> 💻 Tech</label>
+  <label><input type="checkbox" data-cat="crypto" /> 🪙 Crypto</label>
+  <label><input type="checkbox" data-cat="kids" /> 🧸 Kids</label>
+
+  <h3>Hide by language</h3>
+  <label><input type="checkbox" id="hideRussian" /> 🇷🇺 Hide Russian</label>
+  <label><input type="checkbox" id="hideEnglish" /> 🇬🇧 Hide English</label>
+  <div class="hint">Detected by title &amp; channel name</div>
+
+  <h3>Other</h3>
+  <label><input type="checkbox" id="hideShorts" /> Hide Shorts</label>
+  <label><input type="checkbox" id="hideWatched" /> Hide watched videos</label>
+
+  <h3>Video size</h3>
+  <select id="videoSize">
+    <option value="default">Default</option>
+    <option value="small">Small (6 per row)</option>
+    <option value="medium">Medium (4 per row)</option>
+    <option value="large">Large (2 per row)</option>
+    <option value="cinema">Cinema (1 per row)</option>
+  </select>
+
+  <h3>Custom block words</h3>
+  <div class="row">
+    <input type="text" id="kwInput" placeholder="e.g. standup" />
+    <button id="addKw">+</button>
+  </div>
+  <div class="keywords" id="kwList"></div>
+
+  <button id="reset">Reset all</button>
+
+  <script src="popup.js"></script>
+</body>
+</html>
