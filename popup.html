@@ -30,6 +30,7 @@
     .row { display: flex; gap: 8px; }
     .row input { flex: 1; }
     .row button { width: auto; margin-top: 0; padding: 8px 12px; }
+    .row button.secondary { flex: 1; }
     .switch { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; font-size: 14px; }
     .switch input { width: 36px; height: 18px; accent-color: #ff0000; cursor: pointer; }
     .keywords { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
@@ -40,7 +41,6 @@
     .kw span { cursor: pointer; color: #ff6666; font-weight: bold; }
     .hint { font-size: 11px; color: #777; margin-top: 4px; }
 
-    /* Update box */
     #updateBox {
       border: 1px solid #333;
       border-radius: 8px;
@@ -59,12 +59,108 @@
     #updateBox button {
       margin-top: 0; padding: 6px 10px; font-size: 12px; flex: 1;
     }
+
+    #changelogBox {
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+
+    .changelog-toggle {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      color: #ddd;
+      user-select: none;
+      transition: background .15s;
+    }
+    .changelog-toggle:hover { background: #222; }
+    .changelog-toggle .arrow {
+      transition: transform .2s;
+      color: #888;
+    }
+    #changelogBox.open .arrow { transform: rotate(180deg); }
+
+    .changelog-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .3s ease;
+      padding: 0 12px;
+    }
+    #changelogBox.open .changelog-content {
+      max-height: 400px;
+      overflow-y: auto;
+      padding: 10px 12px 14px;
+      border-top: 1px solid #2a2a2a;
+    }
+
+    .changelog-entry {
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px dashed #2a2a2a;
+      font-size: 12px;
+      line-height: 1.5;
+      color: #ccc;
+    }
+    .changelog-entry:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .changelog-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 6px;
+    }
+    .changelog-ver {
+      font-weight: 700;
+      color: #ff5555;
+      font-size: 12px;
+    }
+    .changelog-date {
+      color: #666;
+      font-size: 11px;
+    }
+
+    .changelog-body h5 {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #888;
+      margin: 8px 0 4px;
+    }
+    .changelog-body ul {
+      margin: 4px 0 8px 16px;
+      padding: 0;
+    }
+    .changelog-body li { margin-bottom: 2px; }
+    .changelog-body code {
+      background: #2a2a2a;
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-size: 11px;
+      color: #ffaa88;
+    }
+
+    .changelog-empty {
+      color: #777;
+      font-size: 12px;
+      text-align: center;
+      padding: 8px 0;
+    }
   </style>
 </head>
 <body>
   <h2>🎬 YouTube Feed Filter</h2>
 
-  <!-- ===== UPDATE BOX ===== -->
   <div id="updateBox">
     <div class="top">
       <strong>Updates</strong>
@@ -74,6 +170,16 @@
     <div class="btns">
       <button id="checkUpdate" class="secondary">Check now</button>
       <button id="updateBtn" style="display:none;">⬇ Download update</button>
+    </div>
+  </div>
+
+  <div id="changelogBox">
+    <div class="changelog-toggle" id="changelogToggle">
+      <span>📋 What's new</span>
+      <span class="arrow">▾</span>
+    </div>
+    <div class="changelog-content" id="changelogContent">
+      <div class="changelog-empty">Loading…</div>
     </div>
   </div>
 
@@ -117,6 +223,14 @@
     <button id="addKw">+</button>
   </div>
   <div class="keywords" id="kwList"></div>
+
+  <h3>Backup</h3>
+  <div class="row">
+    <button id="exportBtn" class="secondary">⬇ Export</button>
+    <button id="importBtn" class="secondary">⬆ Import</button>
+  </div>
+  <input type="file" id="importFile" accept="application/json,.json" style="display:none" />
+  <div class="hint" id="backupHint">Save your settings to a file or restore them.</div>
 
   <button id="reset">Reset all</button>
 

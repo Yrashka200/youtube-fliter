@@ -2,18 +2,15 @@ importScripts("updater.js");
 
 const ALARM_NAME = "check-updates";
 const CHECK_INTERVAL_MINUTES = 60;
-
+const UNINSTALL_URL = "https://yrashka200.github.io/youtube-fliter/goodbye.html";
 
 chrome.runtime.onInstalled.addListener((details) => {
-  // Создаём alarm
   chrome.alarms.create(ALARM_NAME, {
     delayInMinutes: 1,
     periodInMinutes: CHECK_INTERVAL_MINUTES
   });
 
-
   checkForUpdates();
-
 
   if (details.reason === "install") {
     chrome.tabs.create({
@@ -21,16 +18,7 @@ chrome.runtime.onInstalled.addListener((details) => {
     });
   }
 
-  
-  if (details.reason === "update") {
-    const newVersion = chrome.runtime.getManifest().version;
-    chrome.notifications.create({
-      type: "basic",
-      iconUrl: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
-      title: "YouTube Feed Filter updated",
-      message: `Now running v${newVersion}`
-    });
-  }
+  chrome.runtime.setUninstallURL(UNINSTALL_URL);
 });
 
 chrome.runtime.onStartup.addListener(() => {
@@ -39,6 +27,7 @@ chrome.runtime.onStartup.addListener(() => {
     periodInMinutes: CHECK_INTERVAL_MINUTES
   });
   checkForUpdates();
+  chrome.runtime.setUninstallURL(UNINSTALL_URL);
 });
 
 chrome.alarms.onAlarm.addListener((alarm) => {

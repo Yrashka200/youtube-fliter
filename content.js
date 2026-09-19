@@ -27,7 +27,7 @@ let settings = {
 function detectLanguage(text) {
   if (!text) return "unknown";
 
-  
+  // Считаем символы
   const cyrillic = (text.match(/[а-яё]/gi) || []).length;
   const latin = (text.match(/[a-z]/gi) || []).length;
   const total = cyrillic + latin;
