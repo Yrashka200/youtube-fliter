@@ -41,6 +41,19 @@
     .kw span { cursor: pointer; color: #ff6666; font-weight: bold; }
     .hint { font-size: 11px; color: #777; margin-top: 4px; }
 
+    #profileBox {
+      background: #1f1f1f;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 12px;
+    }
+    #profileBox .row { margin-top: 8px; }
+    #profileBox .row button {
+      padding: 8px 10px;
+      font-size: 12px;
+    }
+
     #updateBox {
       border: 1px solid #333;
       border-radius: 8px;
@@ -160,6 +173,16 @@
 </head>
 <body>
   <h2>🎬 YouTube Feed Filter</h2>
+
+  <h3>Profiles</h3>
+  <div id="profileBox">
+    <select id="profileSelect"></select>
+    <div class="row">
+      <button id="profileSave" class="secondary">💾 Save</button>
+      <button id="profileNew" class="secondary">＋ New</button>
+      <button id="profileDelete" class="secondary">🗑</button>
+    </div>
+  </div>
 
   <div id="updateBox">
     <div class="top">

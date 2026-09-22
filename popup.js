@@ -10,14 +10,57 @@ const DEFAULT_SETTINGS = {
 };
 
 let settings = { ...DEFAULT_SETTINGS };
+let profiles = [];
+let activeProfileId = null;
+
+function uid() {
+  return "p_" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+}
 
 function save() {
-  chrome.storage.sync.set({ settings });
+  chrome.storage.sync.set({ settings, profiles, activeProfileId });
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     if (tabs[0]?.id) {
       chrome.tabs.sendMessage(tabs[0].id, { type: "settingsUpdated" }).catch(() => {});
     }
   });
+}
+
+function saveCurrentToProfile() {
+  if (!activeProfileId) return;
+  const p = profiles.find(x => x.id === activeProfileId);
+  if (!p) return;
+  p.settings = { ...settings };
+}
+
+function applyProfile(id) {
+  const p = profiles.find(x => x.id === id);
+  if (!p) return;
+  settings = { ...DEFAULT_SETTINGS, ...p.settings };
+  activeProfileId = id;
+  save();
+  render();
+}
+
+function renderProfiles() {
+  const sel = document.getElementById("profileSelect");
+  if (!sel) return;
+  sel.innerHTML = "";
+
+  const none = document.createElement("option");
+  none.value = "";
+  none.textContent = activeProfileId ? "— Custom (unsaved) —" : "— Custom settings —";
+  sel.appendChild(none);
+
+  profiles.forEach(p => {
+    const o = document.createElement("option");
+    o.value = p.id;
+    o.textContent = p.name;
+    if (p.id === activeProfileId) o.selected = true;
+    sel.appendChild(o);
+  });
+
+  if (!activeProfileId) sel.value = "";
 }
 
 function render() {
@@ -43,10 +86,13 @@ function render() {
   list.querySelectorAll("span").forEach(s => {
     s.onclick = () => {
       settings.customKeywords.splice(parseInt(s.dataset.i), 1);
+      saveCurrentToProfile();
       save();
       render();
     };
   });
+
+  renderProfiles();
 }
 
 function renderUpdate(state) {
@@ -111,10 +157,12 @@ function showHint(text, color) {
 function exportSettings() {
   const data = {
     _type: "youtube-feed-filter-settings",
-    _version: 1,
+    _version: 2,
     _exportedAt: new Date().toISOString(),
     _extensionVersion: chrome.runtime.getManifest().version,
-    settings
+    settings,
+    profiles,
+    activeProfileId
   };
 
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
@@ -139,23 +187,30 @@ function importSettings(file) {
     try {
       const data = JSON.parse(e.target.result);
 
-      if (!data || data._type !== "youtube-feed-filter-settings" || !data.settings) {
+      if (!data || data._type !== "youtube-feed-filter-settings") {
         throw new Error("Invalid settings file");
       }
 
-      const incoming = data.settings;
-      const merged = { ...DEFAULT_SETTINGS };
-
-      for (const key of Object.keys(DEFAULT_SETTINGS)) {
-        if (incoming[key] !== undefined) {
-          merged[key] = incoming[key];
+      if (data.settings) {
+        const merged = { ...DEFAULT_SETTINGS };
+        for (const key of Object.keys(DEFAULT_SETTINGS)) {
+          if (data.settings[key] !== undefined) merged[key] = data.settings[key];
         }
+        if (!Array.isArray(merged.blockedCategories)) merged.blockedCategories = [];
+        if (!Array.isArray(merged.customKeywords)) merged.customKeywords = [];
+        settings = merged;
       }
 
-      if (!Array.isArray(merged.blockedCategories)) merged.blockedCategories = [];
-      if (!Array.isArray(merged.customKeywords)) merged.customKeywords = [];
+      if (Array.isArray(data.profiles)) {
+        profiles = data.profiles.map(p => ({
+          id: p.id || uid(),
+          name: p.name || "Imported",
+          settings: { ...DEFAULT_SETTINGS, ...(p.settings || {}) }
+        }));
+      }
 
-      settings = merged;
+      activeProfileId = data.activeProfileId || null;
+
       save();
       render();
 
@@ -211,17 +266,36 @@ document.getElementById("importFile").onchange = (e) => {
   e.target.value = "";
 };
 
-chrome.storage.sync.get(["settings"], (res) => {
-  if (res.settings) settings = { ...DEFAULT_SETTINGS, ...res.settings };
-  render();
-});
-
-document.getElementById("enabled").onchange = (e) => { settings.enabled = e.target.checked; save(); };
-document.getElementById("hideShorts").onchange = (e) => { settings.hideShorts = e.target.checked; save(); };
-document.getElementById("hideWatched").onchange = (e) => { settings.hideWatched = e.target.checked; save(); };
-document.getElementById("hideRussian").onchange = (e) => { settings.hideRussian = e.target.checked; save(); };
-document.getElementById("hideEnglish").onchange = (e) => { settings.hideEnglish = e.target.checked; save(); };
-document.getElementById("videoSize").onchange = (e) => { settings.videoSize = e.target.value; save(); };
+document.getElementById("enabled").onchange = (e) => {
+  settings.enabled = e.target.checked;
+  saveCurrentToProfile();
+  save();
+};
+document.getElementById("hideShorts").onchange = (e) => {
+  settings.hideShorts = e.target.checked;
+  saveCurrentToProfile();
+  save();
+};
+document.getElementById("hideWatched").onchange = (e) => {
+  settings.hideWatched = e.target.checked;
+  saveCurrentToProfile();
+  save();
+};
+document.getElementById("hideRussian").onchange = (e) => {
+  settings.hideRussian = e.target.checked;
+  saveCurrentToProfile();
+  save();
+};
+document.getElementById("hideEnglish").onchange = (e) => {
+  settings.hideEnglish = e.target.checked;
+  saveCurrentToProfile();
+  save();
+};
+document.getElementById("videoSize").onchange = (e) => {
+  settings.videoSize = e.target.value;
+  saveCurrentToProfile();
+  save();
+};
 
 document.querySelectorAll("[data-cat]").forEach(cb => {
   cb.onchange = () => {
@@ -231,6 +305,7 @@ document.querySelectorAll("[data-cat]").forEach(cb => {
     } else {
       settings.blockedCategories = settings.blockedCategories.filter(c => c !== cat);
     }
+    saveCurrentToProfile();
     save();
   };
 });
@@ -241,7 +316,9 @@ document.getElementById("addKw").onclick = () => {
   if (val && !settings.customKeywords.includes(val)) {
     settings.customKeywords.push(val);
     input.value = "";
-    save(); render();
+    saveCurrentToProfile();
+    save();
+    render();
   }
 };
 
@@ -249,7 +326,88 @@ document.getElementById("kwInput").addEventListener("keydown", (e) => {
   if (e.key === "Enter") document.getElementById("addKw").click();
 });
 
-document.getElementById("reset").onclick = () => {
-  settings = { ...DEFAULT_SETTINGS };
-  save(); render();
+document.getElementById("profileSelect").onchange = (e) => {
+  const id = e.target.value;
+  if (!id) {
+    activeProfileId = null;
+    save();
+    render();
+    return;
+  }
+  applyProfile(id);
 };
+
+document.getElementById("profileNew").onclick = () => {
+  const name = prompt("Profile name:", "New profile");
+  if (!name) return;
+  const p = {
+    id: uid(),
+    name: name.trim(),
+    settings: { ...settings }
+  };
+  profiles.push(p);
+  activeProfileId = p.id;
+  save();
+  renderProfiles();
+};
+
+document.getElementById("profileSave").onclick = () => {
+  if (!activeProfileId) {
+    const name = prompt("Save as new profile. Name:", "New profile");
+    if (!name) return;
+    const p = {
+      id: uid(),
+      name: name.trim(),
+      settings: { ...settings }
+    };
+    profiles.push(p);
+    activeProfileId = p.id;
+    save();
+    renderProfiles();
+    return;
+  }
+  saveCurrentToProfile();
+  save();
+  const btn = document.getElementById("profileSave");
+  const old = btn.textContent;
+  btn.textContent = "✔ Saved";
+  setTimeout(() => btn.textContent = old, 1200);
+};
+
+document.getElementById("profileDelete").onclick = () => {
+  if (!activeProfileId) return;
+  const p = profiles.find(x => x.id === activeProfileId);
+  if (!p) return;
+  if (!confirm(`Delete profile "${p.name}"?`)) return;
+  profiles = profiles.filter(x => x.id !== activeProfileId);
+  activeProfileId = null;
+  save();
+  render();
+};
+
+document.getElementById("reset").onclick = () => {
+  if (!confirm("Reset ALL settings and delete all profiles?")) return;
+  settings = { ...DEFAULT_SETTINGS };
+  profiles = [];
+  activeProfileId = null;
+  save();
+  render();
+};
+
+chrome.storage.sync.get(["settings", "profiles", "activeProfileId"], (res) => {
+  if (res.settings) settings = { ...DEFAULT_SETTINGS, ...res.settings };
+  profiles = Array.isArray(res.profiles) ? res.profiles : [];
+  activeProfileId = res.activeProfileId || null;
+
+  if (!Array.isArray(res.profiles) && res.settings) {
+    profiles = [{
+      id: uid(),
+      name: "Default",
+      settings: { ...DEFAULT_SETTINGS, ...res.settings }
+    }];
+    activeProfileId = profiles[0].id;
+    chrome.storage.sync.set({ profiles, activeProfileId });
+  }
+
+  render();
+});
