@@ -1,4 +1,3 @@
-/* ===== Small ===== */
 html[data-yt-size="small"] ytd-rich-grid-renderer {
   --ytd-rich-grid-items-per-row: 6 !important;
 }
@@ -6,7 +5,6 @@ html[data-yt-size="small"] ytd-rich-grid-media #thumbnail,
 html[data-yt-size="small"] ytd-rich-item-renderer #thumbnail {
   border-radius: 8px;
 }
-
 html[data-yt-size="small"] ytd-watch-flexy {
   --ytd-watch-flexy-sidebar-width: 320px !important;
   --ytd-watch-flexy-sidebar-min-width: 320px !important;
@@ -16,7 +14,6 @@ html[data-yt-size="small"] ytd-watch-next-secondary-results-renderer {
   --ytd-compact-video-renderer-width: 130px !important;
 }
 
-/* ===== Medium ===== */
 html[data-yt-size="medium"] ytd-rich-grid-renderer {
   --ytd-rich-grid-items-per-row: 4 !important;
 }
@@ -28,7 +25,6 @@ html[data-yt-size="medium"] ytd-watch-next-secondary-results-renderer {
   --ytd-compact-video-renderer-width: 168px !important;
 }
 
-/* ===== Large ===== */
 html[data-yt-size="large"] ytd-rich-grid-renderer {
   --ytd-rich-grid-items-per-row: 2 !important;
 }
@@ -43,7 +39,6 @@ html[data-yt-size="large"] ytd-compact-video-renderer #thumbnail {
   border-radius: 12px;
 }
 
-/* ===== Cinema ===== */
 html[data-yt-size="cinema"] ytd-rich-grid-renderer {
   --ytd-rich-grid-items-per-row: 1 !important;
   --ytd-rich-grid-item-max-width: 1200px !important;

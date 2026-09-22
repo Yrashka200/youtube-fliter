@@ -43,7 +43,8 @@ function render() {
   list.querySelectorAll("span").forEach(s => {
     s.onclick = () => {
       settings.customKeywords.splice(parseInt(s.dataset.i), 1);
-      save(); render();
+      save();
+      render();
     };
   });
 }

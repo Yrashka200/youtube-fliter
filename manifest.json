@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "YouTube Feed Filter",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Filter YouTube recommendations by topic, language and customize video size",
   "permissions": [
     "storage",
