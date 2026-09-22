@@ -9,6 +9,9 @@
 ### Changed
 - Improved settings export and import to include profiles
 
+## Fix
+- Fixed problem with file goodbye.html
+
 ## [1.2.0] - 2026-09-19
 
 ### Added
