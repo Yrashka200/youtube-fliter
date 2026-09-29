@@ -1,5 +1,25 @@
 # Changelog
 
+
+## [1.4.0] - 2026-09-29
+
+## Changes:
+- Added new UI
+- Added Youtube Ad Blocker
+- Donat functions?
+- Farewell message after deletion
+- New menu for editing and creating profiles has been added
+- YouTube's performance has been significantly improved
+
+
+## Fix:
+- Fixed Farewell message and added currect website 
+- UI fix
+- ......
+
+
+
+
 ## [1.3.0] - 2026-09-22
 
 ### Added
