@@ -2,7 +2,19 @@ importScripts("updater.js");
 
 const ALARM_NAME = "check-updates";
 const CHECK_INTERVAL_MINUTES = 60;
-const UNINSTALL_URL = "https://yrashka200.github.io/youtube-fliter/goodbye.html";
+const UNINSTALL_URL = "https://goodbye-mocha.vercel.app";
+const AD_RULESET_ID = "ad_rules";
+
+async function applyAdBlock(enabled) {
+  try {
+    await chrome.declarativeNetRequest.updateEnabledRulesets({
+      enableRulesetIds: enabled ? [AD_RULESET_ID] : [],
+      disableRulesetIds: enabled ? [] : [AD_RULESET_ID]
+    });
+  } catch (e) {
+    console.warn("Ad rules update failed:", e);
+  }
+}
 
 chrome.runtime.onInstalled.addListener((details) => {
   chrome.alarms.create(ALARM_NAME, {
@@ -19,6 +31,13 @@ chrome.runtime.onInstalled.addListener((details) => {
   }
 
   chrome.runtime.setUninstallURL(UNINSTALL_URL);
+
+  chrome.storage.sync.get(["settings"], (res) => {
+    const s = res.settings || {};
+    const master = s.blockAds !== false;
+    const net = master && s.blockAdsNetwork !== false;
+    applyAdBlock(net);
+  });
 });
 
 chrome.runtime.onStartup.addListener(() => {
@@ -28,6 +47,13 @@ chrome.runtime.onStartup.addListener(() => {
   });
   checkForUpdates();
   chrome.runtime.setUninstallURL(UNINSTALL_URL);
+
+  chrome.storage.sync.get(["settings"], (res) => {
+    const s = res.settings || {};
+    const master = s.blockAds !== false;
+    const net = master && s.blockAdsNetwork !== false;
+    applyAdBlock(net);
+  });
 });
 
 chrome.alarms.onAlarm.addListener((alarm) => {
@@ -36,9 +62,22 @@ chrome.alarms.onAlarm.addListener((alarm) => {
   }
 });
 
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area === "sync" && changes.settings) {
+    const next = changes.settings.newValue || {};
+    const master = next.blockAds !== false;
+    const net = master && next.blockAdsNetwork !== false;
+    applyAdBlock(net);
+  }
+});
+
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg.type === "checkForUpdates") {
     checkForUpdates().then(state => sendResponse(state));
+    return true;
+  }
+  if (msg.type === "applyAdBlock") {
+    applyAdBlock(!!msg.enabled).then(() => sendResponse({ ok: true }));
     return true;
   }
 });

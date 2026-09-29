@@ -18,15 +18,17 @@
     }
 
     .card {
-      max-width: 560px;
+      max-width: 620px;
       width: 100%;
       background: #1c1c1c;
       border: 1px solid #2a2a2a;
       border-radius: 16px;
-      padding: 40px 36px;
-      text-align: center;
+      padding: 32px 32px 24px;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
       animation: fadeIn .5s ease;
+      display: flex;
+      flex-direction: column;
+      min-height: 560px;
     }
 
     @keyframes fadeIn {
@@ -34,16 +36,21 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
     .logo {
-      font-size: 56px;
-      margin-bottom: 12px;
+      font-size: 44px;
+      margin-bottom: 6px;
       filter: drop-shadow(0 4px 12px rgba(255, 0, 0, 0.4));
+      transition: transform .3s;
     }
 
     h1 {
-      font-size: 26px;
+      font-size: 22px;
       font-weight: 700;
-      margin-bottom: 10px;
       background: linear-gradient(90deg, #ff0000, #ff5555);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -51,55 +58,205 @@
     }
 
     .subtitle {
-      color: #aaa;
-      font-size: 14px;
-      margin-bottom: 28px;
-    }
-
-    .features {
-      text-align: left;
-      background: #151515;
-      border-radius: 12px;
-      padding: 20px 22px;
-      margin-bottom: 28px;
-      border: 1px solid #262626;
-    }
-
-    .features h2 {
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
       color: #888;
-      margin-bottom: 14px;
+      font-size: 13px;
+      margin-top: 4px;
     }
 
-    .feature {
+    .dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 22px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #333;
+      transition: all .3s ease;
+      cursor: pointer;
+    }
+
+    .dot.active {
+      background: #ff0000;
+      width: 24px;
+      border-radius: 4px;
+    }
+
+    .dot.done { background: #ff5555; }
+
+    .slides-wrap {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 16px;
+      opacity: 0;
+      transform: translateX(40px);
+      transition: opacity .35s ease, transform .35s ease;
+      pointer-events: none;
+      overflow-y: auto;
+    }
+
+    .slide.active {
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: auto;
+      position: relative;
+    }
+
+    .slide.exit-left {
+      opacity: 0;
+      transform: translateX(-40px);
+    }
+
+    .slide-icon {
+      font-size: 56px;
+      margin-bottom: 16px;
+      line-height: 1;
+    }
+
+    .slide-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+
+    .slide-text {
+      font-size: 14px;
+      line-height: 1.65;
+      color: #bbb;
+      max-width: 460px;
+    }
+
+    .slide-text b { color: #fff; }
+    .slide-text code {
+      background: #2a2a2a;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 12px;
+      color: #ffaa88;
+    }
+
+    .feature-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+      max-width: 480px;
+      margin-top: 16px;
+      text-align: left;
+    }
+
+    .feature-item {
       display: flex;
       align-items: flex-start;
       gap: 12px;
-      padding: 8px 0;
+      background: #151515;
+      border: 1px solid #262626;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 13px;
+      color: #ddd;
+      line-height: 1.45;
+    }
+
+    .feature-item .fi-icon {
+      font-size: 20px;
+      flex-shrink: 0;
+      width: 26px;
+      text-align: center;
+      margin-top: 1px;
+    }
+
+    .feature-item b { color: #fff; }
+
+    .badge {
+      display: inline-block;
+      background: #2a1a1a;
+      color: #ff7777;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+      border: 1px solid #3a2020;
+    }
+
+    .nav {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .nav button {
+      flex: 1;
+      padding: 13px 18px;
       font-size: 14px;
+      font-weight: 700;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform .15s, background .15s, opacity .15s;
+      font-family: inherit;
+    }
+
+    .nav button:active { transform: scale(0.98); }
+
+    .btn-primary {
+      background: #ff0000;
+      color: #fff;
+    }
+    .btn-primary:hover { background: #cc0000; }
+
+    .btn-secondary {
+      background: #2a2a2a;
       color: #ddd;
     }
+    .btn-secondary:hover { background: #3a3a3a; }
 
-    .feature .icon {
-      font-size: 18px;
-      flex-shrink: 0;
-      width: 24px;
-      text-align: center;
+    .btn-secondary:disabled {
+      opacity: 0.35;
+      cursor: default;
     }
 
-    .feature b { color: #fff; }
+    .btn-ghost {
+      background: transparent;
+      color: #777;
+      flex: 0 0 auto;
+      padding: 13px 16px;
+    }
+    .btn-ghost:hover { color: #aaa; }
+
+    .footer {
+      margin-top: 14px;
+      font-size: 11px;
+      color: #555;
+      text-align: center;
+    }
 
     .feedback {
       background: #201a1a;
       border: 1px solid #3a2020;
       border-radius: 12px;
-      padding: 16px 18px;
-      margin-bottom: 28px;
+      padding: 14px 16px;
+      margin-top: 16px;
       font-size: 13px;
       color: #ccc;
       line-height: 1.5;
+      text-align: center;
     }
 
     .feedback a {
@@ -108,84 +265,181 @@
       font-weight: 600;
       word-break: break-all;
     }
-
     .feedback a:hover { text-decoration: underline; }
-
-    .btn {
-      display: inline-block;
-      width: 100%;
-      padding: 14px 20px;
-      font-size: 15px;
-      font-weight: 700;
-      color: #fff;
-      background: #ff0000;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: transform .15s, background .15s;
-      text-decoration: none;
-      text-align: center;
-    }
-
-    .btn:hover {
-      background: #cc0000;
-      transform: translateY(-1px);
-    }
-
-    .btn:active { transform: translateY(0); }
-
-    .footer {
-      margin-top: 18px;
-      font-size: 11px;
-      color: #555;
-    }
   </style>
 </head>
 <body>
   <div class="card">
-    <div class="logo">🎬</div>
-    <h1>Welcome to YouTube Feed Filter</h1>
-    <p class="subtitle">Thanks for installing! Here's what you can do:</p>
-
-    <div class="features">
-      <h2>Features</h2>
-
-      <div class="feature">
-        <span class="icon">🚫</span>
-        <div>Hide videos by <b>category</b> — games, sports, politics, music and more</div>
-      </div>
-
-      <div class="feature">
-        <span class="icon">🌍</span>
-        <div>Hide videos by <b>language</b> — Russian, English</div>
-      </div>
-
-      <div class="feature">
-        <span class="icon">📐</span>
-        <div>Adjust <b>video size</b> — from tiny grid to cinema mode</div>
-      </div>
-
-      <div class="feature">
-        <span class="icon">🔤</span>
-        <div>Add your own <b>custom keywords</b> to block</div>
-      </div>
-
-      <div class="feature">
-        <span class="icon">🔄</span>
-        <div>Automatic <b>updates</b> from GitHub</div>
-      </div>
+    <div class="header">
+      <div class="logo" id="logo">🎬</div>
+      <h1>YouTube Feed Filter</h1>
+      <p class="subtitle">Quick setup guide</p>
     </div>
 
-    <div class="feedback">
-      💡 Found a bug or have an idea?<br>
-      Send it here:
-      <a href="https://github.com/Yrashka200/youtube-fliter/issues"
-         target="_blank" rel="noopener">
-        github.com/Yrashka200/youtube-fliter/issues
-      </a>
+    <div class="dots" id="dots"></div>
+
+    <div class="slides-wrap" id="slidesWrap">
+
+      <div class="slide active">
+        <div class="slide-icon">👋</div>
+        <div class="slide-title">Welcome!</div>
+        <div class="slide-text">
+          Thanks for installing <b>YouTube Feed Filter</b>.<br><br>
+          This extension helps you clean up your YouTube feed — hide unwanted
+          categories, block ads, filter by language and much more.<br><br>
+          Let's take a quick tour of what it can do.
+        </div>
+      </div>
+
+      <div class="slide">
+        <div class="slide-icon">🚫</div>
+        <div class="slide-title">Hide by category</div>
+        <div class="slide-text">
+          Block entire topics from your feed with one click:
+        </div>
+        <div class="feature-list">
+          <div class="feature-item"><span class="fi-icon">🎮</span><div><b>Games</b> — gameplay, streams, let's plays</div></div>
+          <div class="feature-item"><span class="fi-icon">⚽</span><div><b>Sports</b> — football, UFC, highlights</div></div>
+          <div class="feature-item"><span class="fi-icon">🏛</span><div><b>Politics</b> — news, elections, debates</div></div>
+          <div class="feature-item"><span class="fi-icon">🎵</span><div><b>Music</b> — songs, remixes, clips</div></div>
+          <div class="feature-item"><span class="fi-icon">💻</span><div><b>Tech</b>, <b>Crypto</b>, <b>Kids</b>, <b>News</b>, <b>Movies</b>…</div></div>
+        </div>
+        <div class="slide-text" style="margin-top:14px;font-size:13px;">
+          The extension detects videos by <b>title</b>, <b>channel</b> and <b>description</b>.
+        </div>
+      </div>
+
+      <div class="slide">
+        <div class="slide-icon">🌍</div>
+        <div class="slide-title">Filter by language</div>
+        <div class="slide-text">
+          Don't understand a language? Hide it entirely.
+        </div>
+        <div class="feature-list">
+          <div class="feature-item"><span class="fi-icon">🇷🇺</span><div><b>Hide Russian</b> — removes Cyrillic videos from your feed</div></div>
+          <div class="feature-item"><span class="fi-icon">🇬🇧</span><div><b>Hide English</b> — removes English videos</div></div>
+        </div>
+        <div class="slide-text" style="margin-top:14px;font-size:13px;">
+          Language is auto-detected from the <b>title</b> and <b>channel name</b>
+          using Cyrillic/Latin ratio and common word markers.
+        </div>
+      </div>
+
+      <div class="slide">
+        <div class="slide-icon">🔤</div>
+        <div class="slide-title">Custom block words</div>
+        <div class="slide-text">
+          Have a specific topic you never want to see?<br>
+          Add your own keywords and any video containing them will be hidden.
+        </div>
+        <div class="feature-list">
+          <div class="feature-item"><span class="fi-icon">✏️</span><div>Example: <code>standup</code>, <code>reaction</code>, <code>drama</code></div></div>
+          <div class="feature-item"><span class="fi-icon">⚡</span><div>Applied instantly — no page reload needed</div></div>
+          <div class="feature-item"><span class="fi-icon">🧩</span><div>Works together with category filters</div></div>
+        </div>
+      </div>
+
+      <div class="slide">
+        <div class="slide-icon">📱</div>
+        <div class="slide-title">Shorts & watched videos</div>
+        <div class="slide-text">
+          Get rid of the clutter you've already seen.
+        </div>
+        <div class="feature-list">
+          <div class="feature-item"><span class="fi-icon">🚫</span><div><b>Hide Shorts</b> — removes the entire Shorts shelf and individual Shorts from the feed</div></div>
+          <div class="feature-item"><span class="fi-icon">👁</span><div><b>Hide watched</b> — hides videos you've watched more than 90%</div></div>
+        </div>
+      </div>
+
+      <div class="slide">
+        <div class="slide-icon">📐</div>
+        <div class="slide-title">Video size</div>
+        <div class="slide-text">
+          Adjust how many videos fit in a row — perfect for any screen.
+        </div>
+        <div class="feature-list">
+          <div class="feature-item"><span class="fi-icon">🔹</span><div><b>Small</b> — 6 videos per row</div></div>
+          <div class="feature-item"><span class="fi-icon">🔸</span><div><b>Medium</b> — 4 videos per row</div></div>
+          <div class="feature-item"><span class="fi-icon">🔶</span><div><b>Large</b> — 2 videos per row</div></div>
+          <div class="feature-item"><span class="fi-icon">🎦</span><div><b>Cinema</b> — 1 big video per row, perfect for browsing</div></div>
+        </div>
+      </div>
+
+      <div class="slide">
+        <div class="slide-icon">🛡</div>
+        <div class="slide-title">Ad blocking</div>
+        <div class="slide-text">
+          Built-in ad blocker that removes ads at multiple levels.
+        </div>
+        <div class="feature-list">
+          <div class="feature-item"><span class="fi-icon">📺</span><div>Skips <b>video ads</b> automatically (mutes + fast-forwards + clicks Skip)</div></div>
+          <div class="feature-item"><span class="fi-icon">🧱</span><div>Hides <b>banner ads</b>, promoted videos, merch shelves</div></div>
+          <div class="feature-item"><span class="fi-icon">🚫</span><div>Blocks <b>anti-adblock popups</b> ("Ad blockers violate YouTube's Terms…")</div></div>
+          <div class="feature-item"><span class="fi-icon">🌐</span><div>Blocks requests to <code>doubleclick.net</code>, <code>googlesyndication.com</code> and more</div></div>
+        </div>
+      </div>
+
+      <div class="slide">
+        <div class="slide-icon">⚡</div>
+        <div class="slide-title">Optimization mode</div>
+        <div class="slide-text">
+          Makes YouTube run smoothly even on weak devices and long scrolling sessions.
+        </div>
+        <div class="feature-list">
+          <div class="feature-item"><span class="fi-icon">🎞</span><div><b>Disable animations</b> — removes all transitions and CSS animations</div></div>
+          <div class="feature-item"><span class="fi-icon">📹</span><div><b>Pause preview videos</b> — stops the CPU-hungry hover previews on cards</div></div>
+          <div class="feature-item"><span class="fi-icon">✨</span><div><b>Disable effects</b> — no shadows, blur, ambient mode around the player</div></div>
+          <div class="feature-item"><span class="fi-icon">🔍</span><div><b>Reduce scanning</b> — extension scans the page less often</div></div>
+          <div class="feature-item"><span class="fi-icon">🧠</span><div><b>Virtualize DOM</b> — off-screen cards are removed from rendering, so even 500+ videos scroll at 60 FPS</div></div>
+        </div>
+        <div class="slide-text" style="margin-top:14px;font-size:13px;">
+          Each sub-option can be toggled individually in the popup menu.
+        </div>
+      </div>
+
+      <div class="slide">
+        <div class="slide-icon">💾</div>
+        <div class="slide-title">Profiles & Backup</div>
+        <div class="slide-text">
+          Save different filter presets for different moods.
+        </div>
+        <div class="feature-list">
+          <div class="feature-item"><span class="fi-icon">👤</span><div><b>Profiles</b> — create "Work", "Kids", "Chill" etc. and switch instantly</div></div>
+          <div class="feature-item"><span class="fi-icon">⬇</span><div><b>Export</b> — save all settings & profiles to a JSON file</div></div>
+          <div class="feature-item"><span class="fi-icon">⬆</span><div><b>Import</b> — restore them on any device</div></div>
+        </div>
+      </div>
+
+      <div class="slide">
+        <div class="slide-icon">🚀</div>
+        <div class="slide-title">You're all set!</div>
+        <div class="slide-text">
+          The extension <b>auto-checks for updates</b> every hour from GitHub.
+          You'll see a <span class="badge">NEW</span> badge on the toolbar icon
+          when a new version is available.
+        </div>
+
+        <div class="feedback">
+          💡 Found a bug or have an idea?<br>
+          <a href="https://github.com/Yrashka200/youtube-fliter/issues"
+             target="_blank" rel="noopener">
+            github.com/Yrashka200/youtube-fliter/issues
+          </a>
+        </div>
+
+        <div class="slide-text" style="margin-top:16px;font-size:13px;">
+          Click <b>Get Started</b> to open YouTube and configure the extension
+          from the toolbar icon.
+        </div>
+      </div>
+
     </div>
 
-    <button class="btn" id="startBtn">Get Started →</button>
+    <div class="nav">
+      <button class="btn-secondary btn-ghost" id="skipBtn">Skip</button>
+      <button class="btn-secondary" id="prevBtn">← Back</button>
+      <button class="btn-primary" id="nextBtn">Next →</button>
+    </div>
 
     <div class="footer">YouTube Feed Filter v<span id="ver">…</span></div>
   </div>

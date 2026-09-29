@@ -1,21 +1,35 @@
 {
   "manifest_version": 3,
   "name": "YouTube Feed Filter",
-  "version": "1.3.0",
-  "description": "Filter YouTube recommendations by topic, language and customize video size",
+  "version": "1.4.0",
+  "description": "Filter YouTube recommendations by topic, language, customize video size and block ads",
   "permissions": [
     "storage",
     "activeTab",
     "alarms",
-    "notifications"
+    "notifications",
+    "declarativeNetRequest"
   ],
   "host_permissions": [
     "*://*.youtube.com/*",
+    "*://*.googlevideo.com/*",
+    "*://*.doubleclick.net/*",
+    "*://*.googlesyndication.com/*",
+    "*://*.googleadservices.com/*",
     "https://api.github.com/*",
     "https://github.com/*",
     "https://raw.githubusercontent.com/*",
     "https://codeload.github.com/*"
   ],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "ad_rules",
+        "enabled": true,
+        "path": "rules.json"
+      }
+    ]
+  },
   "action": {
     "default_popup": "popup.html"
   },
@@ -33,14 +47,16 @@
       "css": [
         "styles.css"
       ],
-      "run_at": "document_idle"
+      "run_at": "document_idle",
+      "all_frames": true
     }
   ],
   "web_accessible_resources": [
     {
       "resources": [
         "welcome.html",
-        "welcome.js"
+        "welcome.js",
+        "notifications.json"
       ],
       "matches": [
         "<all_urls>"

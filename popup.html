@@ -3,100 +3,623 @@
 <head>
   <meta charset="UTF-8" />
   <style>
+    * { box-sizing: border-box; }
+
     body {
-      width: 320px;
-      font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+      width: 360px;
       margin: 0;
-      padding: 16px;
+      font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
       background: #181818;
       color: #eee;
+      font-size: 13px;
+      max-height: 600px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
     }
-    h2 { margin: 0 0 12px; font-size: 16px; color: #ff0000; }
-    h3 { font-size: 12px; text-transform: uppercase; color: #aaa; margin: 16px 0 8px; letter-spacing: 0.5px; }
-    label { display: flex; align-items: center; gap: 8px; padding: 6px 0; font-size: 13px; cursor: pointer; }
-    input[type="checkbox"] { accent-color: #ff0000; width: 16px; height: 16px; cursor: pointer; }
-    select, input[type="text"] {
-      width: 100%; padding: 8px; background: #2a2a2a; color: #eee;
-      border: 1px solid #444; border-radius: 6px; font-size: 13px; box-sizing: border-box;
-    }
-    button {
-      width: 100%; padding: 10px; margin-top: 12px;
-      background: #ff0000; color: white; border: none;
-      border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 13px;
-    }
-    button:hover { background: #cc0000; }
-    button.secondary { background: #333; }
-    button.secondary:hover { background: #444; }
-    .row { display: flex; gap: 8px; }
-    .row input { flex: 1; }
-    .row button { width: auto; margin-top: 0; padding: 8px 12px; }
-    .row button.secondary { flex: 1; }
-    .switch { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; font-size: 14px; }
-    .switch input { width: 36px; height: 18px; accent-color: #ff0000; cursor: pointer; }
-    .keywords { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-    .kw {
-      background: #333; padding: 4px 8px; border-radius: 12px;
-      font-size: 11px; display: flex; align-items: center; gap: 6px;
-    }
-    .kw span { cursor: pointer; color: #ff6666; font-weight: bold; }
-    .hint { font-size: 11px; color: #777; margin-top: 4px; }
 
-    #profileBox {
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px 8px;
+      border-bottom: 1px solid #262626;
+      flex-shrink: 0;
+    }
+
+    .header .title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .header .title .logo {
+      font-size: 16px;
+    }
+
+    .bell-wrap {
+      position: relative;
+      cursor: pointer;
+      padding: 5px;
+      border-radius: 50%;
+      background: #2a2a2a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      transition: background .15s;
+      user-select: none;
+    }
+    .bell-wrap:hover { background: #3a3a3a; }
+    .bell-wrap svg { width: 15px; height: 15px; fill: #ccc; }
+    .bell-wrap .dot {
+      position: absolute;
+      top: 3px;
+      right: 3px;
+      width: 8px;
+      height: 8px;
+      background: #ff0000;
+      border-radius: 50%;
+      border: 2px solid #181818;
+      display: none;
+    }
+    .bell-wrap.has-new .dot { display: block; }
+
+    .profiles-section {
+      background: #1a1a1a;
+      border-bottom: 1px solid #262626;
+      padding: 10px 0 10px 14px;
+      flex-shrink: 0;
+    }
+
+    .profiles-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-right: 14px;
+      margin-bottom: 8px;
+    }
+
+    .profiles-head .ph-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #666;
+      font-weight: 700;
+    }
+
+    .profiles-head .ph-active {
+      font-size: 10px;
+      color: #4caf50;
+      font-weight: 600;
+    }
+
+    .profiles-scroll {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-right: 14px;
+      scrollbar-width: none;
+      padding-bottom: 2px;
+    }
+    .profiles-scroll::-webkit-scrollbar { display: none; }
+
+    .profile-chip {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 7px 11px;
+      background: #262626;
+      border: 1px solid #333;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      color: #bbb;
+      transition: all .15s;
+      user-select: none;
+      white-space: nowrap;
+      font-family: inherit;
+    }
+    .profile-chip:hover {
+      background: #2f2f2f;
+      border-color: #444;
+      color: #fff;
+    }
+    .profile-chip.active {
+      background: linear-gradient(135deg, #3a1a1a, #4a2020);
+      border-color: #ff0000;
+      color: #fff;
+      box-shadow: 0 0 0 1px rgba(255, 0, 0, 0.3);
+    }
+    .profile-chip.active .pc-icon {
+      filter: drop-shadow(0 0 4px rgba(255, 100, 100, 0.6));
+    }
+    .profile-chip .pc-icon {
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    .profile-chip.new {
+      background: transparent;
+      border: 1px dashed #444;
+      color: #777;
+      padding: 7px 12px;
+    }
+    .profile-chip.new:hover {
+      border-color: #ff0000;
+      color: #ff5555;
+      background: #221818;
+    }
+
+    .profile-chip.edit {
+      background: transparent;
+      border: 1px dashed #333;
+      color: #666;
+      padding: 7px 10px;
+      font-size: 13px;
+    }
+    .profile-chip.edit:hover {
+      border-color: #4caf50;
+      color: #4caf50;
+      background: #1a221a;
+    }
+
+    .master {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
       background: #1f1f1f;
+      border-bottom: 1px solid #262626;
+      flex-shrink: 0;
+    }
+
+    .master-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 38px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .switch .slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background: #444;
+      border-radius: 20px;
+      transition: background .2s;
+    }
+    .switch .slider:before {
+      content: "";
+      position: absolute;
+      height: 14px;
+      width: 14px;
+      left: 3px;
+      top: 3px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform .2s;
+    }
+    .switch input:checked + .slider { background: #ff0000; }
+    .switch input:checked + .slider:before { transform: translateX(18px); }
+
+    .tabs {
+      display: flex;
+      background: #1a1a1a;
+      border-bottom: 1px solid #262626;
+      flex-shrink: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .tabs::-webkit-scrollbar { display: none; }
+
+    .tab {
+      flex: 1;
+      min-width: 60px;
+      padding: 10px 6px;
+      text-align: center;
+      font-size: 10px;
+      font-weight: 600;
+      color: #888;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      border-bottom: 2px solid transparent;
+      transition: color .15s, border-color .15s;
+      user-select: none;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+    .tab:hover { color: #ccc; }
+    .tab.active {
+      color: #fff;
+      border-bottom-color: #ff0000;
+    }
+    .tab .tab-icon {
+      display: block;
+      font-size: 15px;
+      margin-bottom: 2px;
+      line-height: 1;
+    }
+
+    .content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 14px 16px;
+    }
+
+    .content::-webkit-scrollbar { width: 8px; }
+    .content::-webkit-scrollbar-track { background: #181818; }
+    .content::-webkit-scrollbar-thumb {
+      background: #333;
+      border-radius: 4px;
+    }
+    .content::-webkit-scrollbar-thumb:hover { background: #444; }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; animation: fadeIn .2s ease; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .card {
+      background: #1e1e1e;
+      border: 1px solid #2a2a2a;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+
+    .card-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #ddd;
+      background: #222;
+      border-bottom: 1px solid #2a2a2a;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .card-head .card-icon {
+      font-size: 14px;
+    }
+
+    .card-body {
+      padding: 8px 12px 12px;
+    }
+
+    .card-body.no-pad {
+      padding: 4px 6px 6px;
+    }
+
+    .opt {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 7px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background .1s;
+      font-size: 13px;
+    }
+    .opt:hover { background: #262626; }
+
+    .opt-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .opt-title { color: #eee; }
+
+    .opt-sub {
+      font-size: 11px;
+      color: #777;
+      line-height: 1.35;
+    }
+
+    .opt input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 34px;
+      height: 18px;
+      background: #444;
+      border-radius: 10px;
+      position: relative;
+      cursor: pointer;
+      transition: background .2s;
+      flex-shrink: 0;
+      margin: 0;
+    }
+    .opt input[type="checkbox"]::before {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 14px;
+      height: 14px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform .2s;
+    }
+    .opt input[type="checkbox"]:checked { background: #ff0000; }
+    .opt input[type="checkbox"]:checked::before { transform: translateX(16px); }
+
+    .opt.green input[type="checkbox"]:checked { background: #4caf50; }
+
+    .chips {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      padding: 4px 0;
+    }
+
+    .chip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 10px;
+      background: #262626;
       border: 1px solid #333;
       border-radius: 8px;
-      padding: 10px;
-      margin-bottom: 12px;
+      cursor: pointer;
+      font-size: 12px;
+      color: #ccc;
+      transition: all .15s;
+      user-select: none;
     }
-    #profileBox .row { margin-top: 8px; }
-    #profileBox .row button {
-      padding: 8px 10px;
+    .chip:hover { background: #2f2f2f; border-color: #444; }
+    .chip input { display: none; }
+    .chip.active {
+      background: #3a1a1a;
+      border-color: #ff0000;
+      color: #fff;
+    }
+    .chip .chip-icon { font-size: 14px; }
+    .chip .chip-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .sub-opts {
+      display: none;
+      margin-left: 4px;
+      border-left: 2px solid #2a3a2a;
+      padding-left: 6px;
+    }
+    .sub-opts.open { display: block; }
+
+    .sub-opts.red {
+      border-left-color: #3a2020;
+    }
+
+    .sub-opts .opt {
+      padding: 5px 8px;
       font-size: 12px;
     }
 
-    #updateBox {
-      border: 1px solid #333;
-      border-radius: 8px;
-      padding: 10px;
-      margin-bottom: 12px;
-      background: #1f1f1f;
-      transition: border-color .2s;
+    .sub-opts .opt input[type="checkbox"] {
+      width: 28px;
+      height: 16px;
     }
-    #updateBox .top {
-      display: flex; justify-content: space-between; align-items: center;
-      font-size: 12px; margin-bottom: 6px;
+    .sub-opts .opt input[type="checkbox"]::before {
+      width: 12px;
+      height: 12px;
     }
-    #versionInfo { color: #888; }
-    #updateStatus { font-size: 12px; margin-bottom: 6px; }
-    #updateBox .btns { display: flex; gap: 6px; }
-    #updateBox button {
-      margin-top: 0; padding: 6px 10px; font-size: 12px; flex: 1;
+    .sub-opts .opt input[type="checkbox"]:checked::before {
+      transform: translateX(12px);
     }
 
-    #changelogBox {
-      background: #1a1a1a;
-      border: 1px solid #2a2a2a;
-      border-radius: 8px;
-      margin-bottom: 12px;
-      overflow: hidden;
+    .sub-opts .opt input[type="checkbox"]:checked {
+      background: #4caf50;
     }
+
+    .sub-opts.red .opt input[type="checkbox"]:checked {
+      background: #ff0000;
+    }
+
+    .kw-input-row {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .kw-input-row input[type="text"] {
+      flex: 1;
+      background: #262626;
+      color: #eee;
+      border: 1px solid #333;
+      border-radius: 6px;
+      padding: 8px 10px;
+      font-size: 12px;
+      font-family: inherit;
+      min-width: 0;
+    }
+    .kw-input-row input[type="text"]:focus {
+      outline: none;
+      border-color: #ff0000;
+    }
+
+    .kw-input-row button {
+      background: #ff0000;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 0 14px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background .15s;
+    }
+    .kw-input-row button:hover { background: #cc0000; }
+
+    .keywords {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .kw {
+      background: #2f2f2f;
+      border: 1px solid #3a3a3a;
+      padding: 4px 6px 4px 9px;
+      border-radius: 12px;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: #ccc;
+    }
+
+    .kw span {
+      cursor: pointer;
+      color: #ff6666;
+      font-weight: bold;
+      font-size: 13px;
+      line-height: 1;
+      padding: 0 2px;
+      border-radius: 50%;
+      transition: background .15s;
+    }
+    .kw span:hover { background: #4a2020; }
+
+    .kw-empty {
+      color: #555;
+      font-size: 11px;
+      font-style: italic;
+      padding: 4px 2px;
+    }
+
+    .size-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+
+    .size-btn {
+      background: #262626;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 10px 8px;
+      cursor: pointer;
+      color: #ccc;
+      font-size: 12px;
+      text-align: center;
+      font-family: inherit;
+      transition: all .15s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .size-btn:hover { background: #2f2f2f; border-color: #444; }
+    .size-btn.active {
+      background: #3a1a1a;
+      border-color: #ff0000;
+      color: #fff;
+    }
+    .size-btn .size-icon { font-size: 18px; line-height: 1; }
+    .size-btn .size-label { font-weight: 600; }
+    .size-btn .size-hint { font-size: 10px; color: #888; }
+    .size-btn.active .size-hint { color: #ff9999; }
+
+    .update-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 10px 8px;
+      font-size: 12px;
+    }
+
+    .update-version {
+      color: #888;
+      font-size: 11px;
+    }
+
+    .update-status {
+      color: #888;
+      font-size: 11px;
+      padding: 0 8px 8px;
+    }
+    .update-status.ok { color: #4caf50; }
+    .update-status.available { color: #4caf50; font-weight: 600; }
+    .update-status.error { color: #ffaa00; }
+
+    .update-btns {
+      display: flex;
+      gap: 6px;
+      padding: 4px 8px 8px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 7px 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      font-family: inherit;
+      transition: background .15s, transform .1s;
+    }
+    .btn:active { transform: scale(0.97); }
+
+    .btn-primary { background: #ff0000; color: #fff; }
+    .btn-primary:hover { background: #cc0000; }
+
+    .btn-secondary { background: #333; color: #ddd; }
+    .btn-secondary:hover { background: #444; }
+
+    .btn-danger {
+      background: #2a1a1a;
+      color: #ff7777;
+      border: 1px solid #3a2020;
+    }
+    .btn-danger:hover { background: #3a2020; }
 
     .changelog-toggle {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 12px;
+      padding: 10px 8px;
       cursor: pointer;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 600;
       color: #ddd;
-      user-select: none;
+      border-radius: 6px;
       transition: background .15s;
+      user-select: none;
     }
-    .changelog-toggle:hover { background: #222; }
+    .changelog-toggle:hover { background: #262626; }
     .changelog-toggle .arrow {
       transition: transform .2s;
       color: #888;
+      font-size: 11px;
     }
     #changelogBox.open .arrow { transform: rotate(180deg); }
 
@@ -104,20 +627,19 @@
       max-height: 0;
       overflow: hidden;
       transition: max-height .3s ease;
-      padding: 0 12px;
+      padding: 0 8px;
     }
     #changelogBox.open .changelog-content {
       max-height: 400px;
       overflow-y: auto;
-      padding: 10px 12px 14px;
-      border-top: 1px solid #2a2a2a;
+      padding: 4px 8px 10px;
     }
 
     .changelog-entry {
-      margin-bottom: 14px;
-      padding-bottom: 12px;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
       border-bottom: 1px dashed #2a2a2a;
-      font-size: 12px;
+      font-size: 11px;
       line-height: 1.5;
       color: #ccc;
     }
@@ -131,132 +653,913 @@
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-      margin-bottom: 6px;
+      margin-bottom: 5px;
     }
     .changelog-ver {
       font-weight: 700;
       color: #ff5555;
-      font-size: 12px;
+      font-size: 11px;
     }
     .changelog-date {
       color: #666;
-      font-size: 11px;
+      font-size: 10px;
     }
 
     .changelog-body h5 {
-      font-size: 11px;
+      font-size: 10px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
       color: #888;
-      margin: 8px 0 4px;
+      margin: 6px 0 3px;
     }
     .changelog-body ul {
-      margin: 4px 0 8px 16px;
+      margin: 3px 0 6px 14px;
       padding: 0;
     }
     .changelog-body li { margin-bottom: 2px; }
     .changelog-body code {
       background: #2a2a2a;
-      padding: 1px 5px;
-      border-radius: 4px;
-      font-size: 11px;
+      padding: 1px 4px;
+      border-radius: 3px;
+      font-size: 10px;
       color: #ffaa88;
     }
 
     .changelog-empty {
+      color: #666;
+      font-size: 11px;
+      text-align: center;
+      padding: 6px 0;
+      font-style: italic;
+    }
+
+    #notifPanel {
+      display: none;
+      background: #1f1f1f;
+      border-bottom: 1px solid #2a2a2a;
+      padding: 10px 14px;
+      animation: slideDown .2s ease;
+      flex-shrink: 0;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    #notifPanel.open { display: block; }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .notif-item {
+      font-size: 12px;
+      line-height: 1.5;
+      color: #ccc;
+      padding: 8px 0;
+      border-bottom: 1px dashed #2a2a2a;
+    }
+    .notif-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .notif-item:first-child { padding-top: 0; }
+    .notif-item .n-title {
+      font-weight: 700;
+      color: #fff;
+      font-size: 12px;
+      margin-bottom: 3px;
+    }
+    .notif-item .n-date {
+      font-size: 10px;
+      color: #666;
+      float: right;
+    }
+    .notif-item a {
+      color: #ff5555;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .notif-item a:hover { text-decoration: underline; }
+    .notif-empty {
       color: #777;
       font-size: 12px;
       text-align: center;
-      padding: 8px 0;
+      padding: 6px 0;
     }
+
+    .hint {
+      font-size: 11px;
+      color: #666;
+      padding: 4px 8px 0;
+      line-height: 1.4;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%) translateY(60px);
+      background: #2a2a2a;
+      border: 1px solid #3a3a3a;
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      opacity: 0;
+      transition: opacity .25s, transform .25s;
+      pointer-events: none;
+      z-index: 100;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      max-width: 320px;
+      text-align: center;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    .toast.ok { border-color: #2a4a2a; background: #1f2a1f; color: #a5d6a5; }
+    .toast.err { border-color: #4a2a2a; background: #2a1f1f; color: #ff9999; }
+
+    body.filter-off .tabs,
+    body.filter-off .content {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    .donate-hero {
+      text-align: center;
+      padding: 24px 16px 16px;
+    }
+
+    .donate-hero .dh-icon {
+      font-size: 56px;
+      line-height: 1;
+      margin-bottom: 12px;
+      display: block;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .donate-hero .dh-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .donate-hero .dh-sub {
+      font-size: 12px;
+      color: #888;
+      line-height: 1.5;
+    }
+
+    .donate-fake-btn {
+      width: 100%;
+      padding: 14px 16px;
+      background: linear-gradient(135deg, #ff0000, #cc0000);
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: transform .15s, box-shadow .15s;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .donate-fake-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(255, 0, 0, 0.3);
+    }
+    .donate-fake-btn:active { transform: translateY(0); }
+
+    .donate-fake-btn.gold {
+      background: linear-gradient(135deg, #f9a825, #e65100);
+    }
+    .donate-fake-btn.gold:hover {
+      box-shadow: 0 6px 16px rgba(249, 168, 37, 0.35);
+    }
+
+    .donate-fake-btn.diamond {
+      background: linear-gradient(135deg, #42a5f5, #1565c0);
+    }
+    .donate-fake-btn.diamond:hover {
+      box-shadow: 0 6px 16px rgba(66, 165, 245, 0.35);
+    }
+
+    .donate-note {
+      background: #1a1a1a;
+      border: 1px dashed #333;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 11px;
+      color: #777;
+      line-height: 1.5;
+      text-align: center;
+      margin-top: 12px;
+    }
+
+    .joke-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      padding: 20px;
+      animation: fadeIn .2s ease;
+    }
+    .joke-overlay.open { display: flex; }
+
+    .joke-modal {
+      background: #1e1e1e;
+      border: 1px solid #333;
+      border-radius: 14px;
+      padding: 24px 20px 20px;
+      max-width: 300px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+      animation: popIn .25s ease;
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.9); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+
+    .joke-modal .jm-icon {
+      font-size: 48px;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .joke-modal .jm-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .joke-modal .jm-text {
+      font-size: 12px;
+      line-height: 1.6;
+      color: #bbb;
+      margin-bottom: 16px;
+    }
+
+    .joke-modal .jm-text b { color: #fff; }
+
+    .joke-modal .jm-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .joke-modal .jm-btn {
+      padding: 11px 16px;
+      border: none;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: transform .15s, background .15s;
+    }
+    .joke-modal .jm-btn:active { transform: scale(0.97); }
+
+    .joke-modal .jm-btn.star {
+      background: linear-gradient(135deg, #f9a825, #e65100);
+      color: #fff;
+    }
+    .joke-modal .jm-btn.star:hover { filter: brightness(1.1); }
+
+    .joke-modal .jm-btn.close {
+      background: #2a2a2a;
+      color: #ccc;
+    }
+    .joke-modal .jm-btn.close:hover { background: #3a3a3a; }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      padding: 20px;
+      animation: fadeIn .2s ease;
+    }
+    .modal-overlay.open { display: flex; }
+
+    .modal {
+      background: #1e1e1e;
+      border: 1px solid #333;
+      border-radius: 14px;
+      padding: 20px 18px 16px;
+      max-width: 320px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+      animation: popIn .25s ease;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .modal .m-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .modal .m-sub {
+      font-size: 11px;
+      color: #888;
+      margin-bottom: 14px;
+      line-height: 1.4;
+    }
+
+    .modal .m-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #666;
+      font-weight: 700;
+      margin: 12px 0 6px;
+    }
+
+    .modal input[type="text"] {
+      width: 100%;
+      background: #262626;
+      color: #eee;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 13px;
+      font-family: inherit;
+    }
+    .modal input[type="text"]:focus {
+      outline: none;
+      border-color: #ff0000;
+    }
+
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 6px;
+    }
+
+    .icon-opt {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #262626;
+      border: 1px solid #333;
+      border-radius: 8px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: all .15s;
+      user-select: none;
+    }
+    .icon-opt:hover {
+      background: #2f2f2f;
+      border-color: #555;
+      transform: scale(1.05);
+    }
+    .icon-opt.active {
+      background: #3a1a1a;
+      border-color: #ff0000;
+      transform: scale(1.05);
+    }
+
+    .preset-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+
+    .preset-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 10px 8px;
+      background: #262626;
+      border: 1px solid #333;
+      border-radius: 10px;
+      cursor: pointer;
+      color: #ccc;
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 600;
+      transition: all .15s;
+    }
+    .preset-btn:hover {
+      background: #2f2f2f;
+      border-color: #555;
+      transform: translateY(-1px);
+    }
+    .preset-btn.active {
+      background: #3a1a1a;
+      border-color: #ff0000;
+      color: #fff;
+    }
+    .preset-btn .pb-icon {
+      font-size: 22px;
+      line-height: 1;
+    }
+    .preset-btn .pb-label {
+      font-weight: 700;
+    }
+    .preset-btn .pb-desc {
+      font-size: 9px;
+      color: #777;
+      text-align: center;
+      line-height: 1.2;
+    }
+    .preset-btn.active .pb-desc { color: #ff9999; }
+
+    .modal-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .modal-actions .btn { padding: 10px 14px; font-size: 13px; }
+
+    .modal-delete {
+      background: transparent;
+      color: #ff7777;
+      border: 1px solid #3a2020;
+      padding: 8px;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 11px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 10px;
+      font-weight: 600;
+      transition: background .15s;
+    }
+    .modal-delete:hover { background: #2a1a1a; }
   </style>
 </head>
 <body>
-  <h2>🎬 YouTube Feed Filter</h2>
-
-  <h3>Profiles</h3>
-  <div id="profileBox">
-    <select id="profileSelect"></select>
-    <div class="row">
-      <button id="profileSave" class="secondary">💾 Save</button>
-      <button id="profileNew" class="secondary">＋ New</button>
-      <button id="profileDelete" class="secondary">🗑</button>
+  <div class="header">
+    <div class="title">
+      <span class="logo">🎬</span>
+      <span>YouTube Feed Filter</span>
+    </div>
+    <div class="bell-wrap" id="bellBtn" title="Notifications">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 22a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22Zm7-5v-5a7 7 0 0 0-5-6.7V5a2 2 0 1 0-4 0v.3A7 7 0 0 0 5 12v5l-1.7 1.7a1 1 0 0 0 .7 1.3h16a1 1 0 0 0 .7-1.3L19 17Z"/>
+      </svg>
+      <span class="dot"></span>
     </div>
   </div>
 
-  <div id="updateBox">
-    <div class="top">
-      <strong>Updates</strong>
-      <span id="versionInfo">v…</span>
+  <div id="notifPanel"></div>
+
+  <div class="profiles-section">
+    <div class="profiles-head">
+      <span class="ph-label">Profiles</span>
+      <span class="ph-active" id="activeProfileLabel"></span>
     </div>
-    <div id="updateStatus">Checking for updates…</div>
-    <div class="btns">
-      <button id="checkUpdate" class="secondary">Check now</button>
-      <button id="updateBtn" style="display:none;">⬇ Download update</button>
+    <div class="profiles-scroll" id="profilesScroll"></div>
+  </div>
+
+  <div class="master">
+    <span class="master-label">Enable filter</span>
+    <label class="switch">
+      <input type="checkbox" id="enabled" />
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="filter">
+      <span class="tab-icon">🎯</span>Filter
+    </button>
+    <button class="tab" data-tab="performance">
+      <span class="tab-icon">⚡</span>Perf
+    </button>
+    <button class="tab" data-tab="look">
+      <span class="tab-icon">🎨</span>Look
+    </button>
+    <button class="tab" data-tab="donate">
+      <span class="tab-icon">💝</span>Donate
+    </button>
+    <button class="tab" data-tab="settings">
+      <span class="tab-icon">⚙️</span>More
+    </button>
+  </div>
+
+  <div class="content">
+
+    <div class="tab-panel active" data-panel="filter">
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-icon">📂</span>
+          <span>Categories</span>
+        </div>
+        <div class="card-body no-pad">
+          <div class="chips" id="catChips">
+            <label class="chip" data-cat="games"><input type="checkbox" /><span class="chip-icon">🎮</span><span class="chip-name">Games</span></label>
+            <label class="chip" data-cat="sports"><input type="checkbox" /><span class="chip-icon">⚽</span><span class="chip-name">Sports</span></label>
+            <label class="chip" data-cat="politics"><input type="checkbox" /><span class="chip-icon">🏛</span><span class="chip-name">Politics</span></label>
+            <label class="chip" data-cat="music"><input type="checkbox" /><span class="chip-icon">🎵</span><span class="chip-name">Music</span></label>
+            <label class="chip" data-cat="news"><input type="checkbox" /><span class="chip-icon">📰</span><span class="chip-name">News</span></label>
+            <label class="chip" data-cat="movies"><input type="checkbox" /><span class="chip-icon">🎥</span><span class="chip-name">Movies</span></label>
+            <label class="chip" data-cat="tech"><input type="checkbox" /><span class="chip-icon">💻</span><span class="chip-name">Tech</span></label>
+            <label class="chip" data-cat="crypto"><input type="checkbox" /><span class="chip-icon">🪙</span><span class="chip-name">Crypto</span></label>
+            <label class="chip" data-cat="kids"><input type="checkbox" /><span class="chip-icon">🧸</span><span class="chip-name">Kids</span></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-icon">🌍</span>
+          <span>Language</span>
+        </div>
+        <div class="card-body no-pad">
+          <label class="opt">
+            <div class="opt-text">
+              <span class="opt-title">🇷🇺 Hide Russian</span>
+              <span class="opt-sub">Hide Cyrillic videos</span>
+            </div>
+            <input type="checkbox" id="hideRussian" />
+          </label>
+          <label class="opt">
+            <div class="opt-text">
+              <span class="opt-title">🇬🇧 Hide English</span>
+              <span class="opt-sub">Hide English videos</span>
+            </div>
+            <input type="checkbox" id="hideEnglish" />
+          </label>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-icon">🔤</span>
+          <span>Custom block words</span>
+        </div>
+        <div class="card-body">
+          <div class="kw-input-row">
+            <input type="text" id="kwInput" placeholder="e.g. standup, reaction" />
+            <button id="addKw">+</button>
+          </div>
+          <div class="keywords" id="kwList"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-icon">👁</span>
+          <span>Content filters</span>
+        </div>
+        <div class="card-body no-pad">
+          <label class="opt">
+            <div class="opt-text">
+              <span class="opt-title">Hide Shorts</span>
+              <span class="opt-sub">Removes Shorts shelf &amp; individual Shorts</span>
+            </div>
+            <input type="checkbox" id="hideShorts" />
+          </label>
+          <label class="opt">
+            <div class="opt-text">
+              <span class="opt-title">Hide watched videos</span>
+              <span class="opt-sub">Hides videos watched more than 90%</span>
+            </div>
+            <input type="checkbox" id="hideWatched" />
+          </label>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tab-panel" data-panel="performance">
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-icon">🛡</span>
+          <span>Ad blocking</span>
+        </div>
+        <div class="card-body no-pad">
+          <label class="opt">
+            <div class="opt-text">
+              <span class="opt-title">Block ads</span>
+              <span class="opt-sub">Master switch for all ad blocking</span>
+            </div>
+            <input type="checkbox" id="blockAds" />
+          </label>
+
+          <div class="sub-opts red" id="adSubs">
+            <label class="opt">
+              <div class="opt-text">
+                <span class="opt-title">Video ads</span>
+                <span class="opt-sub">Skip in-player ads</span>
+              </div>
+              <input type="checkbox" id="blockAdsVideo" />
+            </label>
+            <label class="opt">
+              <div class="opt-text">
+                <span class="opt-title">Banner &amp; feed ads</span>
+                <span class="opt-sub">Promoted videos, merch, banners</span>
+              </div>
+              <input type="checkbox" id="blockAdsBanners" />
+            </label>
+            <label class="opt">
+              <div class="opt-text">
+                <span class="opt-title">Anti-adblock popups</span>
+                <span class="opt-sub">"Ad blockers violate ToS" dialogs</span>
+              </div>
+              <input type="checkbox" id="blockAdsPopups" />
+            </label>
+            <label class="opt">
+              <div class="opt-text">
+                <span class="opt-title">Block ad networks</span>
+                <span class="opt-sub">Network-level (doubleclick etc.)</span>
+              </div>
+              <input type="checkbox" id="blockAdsNetwork" />
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-icon">⚡</span>
+          <span>Optimization mode</span>
+        </div>
+        <div class="card-body no-pad">
+          <label class="opt green">
+            <div class="opt-text">
+              <span class="opt-title">Enable optimization</span>
+              <span class="opt-sub">Minimizes CPU/RAM usage on weak devices</span>
+            </div>
+            <input type="checkbox" id="optimize" />
+          </label>
+
+          <div class="sub-opts" id="optSubs">
+            <label class="opt">
+              <div class="opt-text">
+                <span class="opt-title">Disable animations</span>
+              </div>
+              <input type="checkbox" id="optimizeAnimations" />
+            </label>
+            <label class="opt">
+              <div class="opt-text">
+                <span class="opt-title">Pause preview videos</span>
+              </div>
+              <input type="checkbox" id="optimizeVideos" />
+            </label>
+            <label class="opt">
+              <div class="opt-text">
+                <span class="opt-title">Disable shadows &amp; blur</span>
+              </div>
+              <input type="checkbox" id="optimizeEffects" />
+            </label>
+            <label class="opt">
+              <div class="opt-text">
+                <span class="opt-title">Reduce DOM scanning</span>
+              </div>
+              <input type="checkbox" id="optimizeScan" />
+            </label>
+            <label class="opt">
+              <div class="opt-text">
+                <span class="opt-title">Virtualize DOM</span>
+                <span class="opt-sub">Best for long scrolls (500+ videos)</span>
+              </div>
+              <input type="checkbox" id="optimizeDom" />
+            </label>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tab-panel" data-panel="look">
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-icon">📐</span>
+          <span>Video size</span>
+        </div>
+        <div class="card-body">
+          <div class="size-grid" id="sizeGrid">
+            <button class="size-btn" data-size="default">
+              <span class="size-icon">⚙️</span>
+              <span class="size-label">Default</span>
+              <span class="size-hint">YouTube default</span>
+            </button>
+            <button class="size-btn" data-size="small">
+              <span class="size-icon">🔹</span>
+              <span class="size-label">Small</span>
+              <span class="size-hint">6 per row</span>
+            </button>
+            <button class="size-btn" data-size="medium">
+              <span class="size-icon">🔸</span>
+              <span class="size-label">Medium</span>
+              <span class="size-hint">4 per row</span>
+            </button>
+            <button class="size-btn" data-size="large">
+              <span class="size-icon">🔶</span>
+              <span class="size-label">Large</span>
+              <span class="size-hint">2 per row</span>
+            </button>
+            <button class="size-btn" data-size="cinema">
+              <span class="size-icon">🎦</span>
+              <span class="size-label">Cinema</span>
+              <span class="size-hint">1 per row</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tab-panel" data-panel="donate">
+
+      <div class="card">
+        <div class="donate-hero">
+          <span class="dh-icon">💝</span>
+          <div class="dh-title">Support the developer</div>
+          <div class="dh-sub">Unlock exclusive features and support<br>the development of this extension!</div>
+        </div>
+        <div class="card-body">
+          <button class="donate-fake-btn" data-tier="coffee">
+            ☕ Buy me a coffee — $3
+          </button>
+          <button class="donate-fake-btn gold" data-tier="gold">
+            👑 Gold supporter — $10
+          </button>
+          <button class="donate-fake-btn diamond" data-tier="diamond">
+            💎 Diamond legend — $50
+          </button>
+          <button class="donate-fake-btn" data-tier="custom" style="background:#2a2a2a;">
+            🎁 Custom amount
+          </button>
+
+          <div class="donate-note">
+            Every donation helps keep this extension free and updated ❤️
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tab-panel" data-panel="settings">
+
+      <div class="card" id="updateBox">
+        <div class="card-head">
+          <span class="card-icon">🔄</span>
+          <span>Updates</span>
+        </div>
+        <div class="update-row">
+          <span>Current version</span>
+          <span class="update-version" id="versionInfo">v…</span>
+        </div>
+        <div class="update-status" id="updateStatus">Checking for updates…</div>
+        <div class="update-btns">
+          <button class="btn btn-secondary" id="checkUpdate">Check now</button>
+          <button class="btn btn-primary" id="updateBtn" style="display:none;">⬇ Download</button>
+        </div>
+        <div id="changelogBox">
+          <div class="changelog-toggle" id="changelogToggle">
+            <span>📋 What's new</span>
+            <span class="arrow">▾</span>
+          </div>
+          <div class="changelog-content" id="changelogContent">
+            <div class="changelog-empty">Loading…</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-icon">💾</span>
+          <span>Backup</span>
+        </div>
+        <div class="card-body no-pad">
+          <div class="update-btns" style="padding:8px;">
+            <button class="btn btn-secondary" id="exportBtn">⬇ Export</button>
+            <button class="btn btn-secondary" id="importBtn">⬆ Import</button>
+          </div>
+          <div class="hint" id="backupHint">Save your settings to a file or restore them.</div>
+        </div>
+        <input type="file" id="importFile" accept="application/json,.json" style="display:none" />
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-icon">⚠️</span>
+          <span>Danger zone</span>
+        </div>
+        <div class="card-body">
+          <button class="btn btn-danger" id="reset" style="width:100%;">Reset all settings</button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <div class="joke-overlay" id="jokeOverlay">
+    <div class="joke-modal">
+      <span class="jm-icon">🎉</span>
+      <div class="jm-title">It's a joke!</div>
+      <div class="jm-text">
+        <b>There are no donation perks.</b><br><br>
+        If you enjoy using this extension, just leave a
+        <b>GitHub star ⭐</b> — it means a lot!<br><br>
+        Thank you! ❤️
+      </div>
+      <div class="jm-actions">
+        <button class="jm-btn star" id="jokeStar">⭐ Star on GitHub</button>
+        <button class="jm-btn close" id="jokeClose">Close</button>
+      </div>
     </div>
   </div>
 
-  <div id="changelogBox">
-    <div class="changelog-toggle" id="changelogToggle">
-      <span>📋 What's new</span>
-      <span class="arrow">▾</span>
+  <div class="modal-overlay" id="profileModal">
+    <div class="modal">
+      <div class="m-title" id="pmTitle">New profile</div>
+      <div class="m-sub" id="pmSub">Give it a name, icon, and optionally pick a preset.</div>
+
+      <div class="m-label">Presets</div>
+      <div class="preset-grid" id="presetGrid">
+        <button class="preset-btn" data-preset="work">
+          <span class="pb-icon">💼</span>
+          <span class="pb-label">Work</span>
+          <span class="pb-desc">No music, no games, no shorts</span>
+        </button>
+        <button class="preset-btn" data-preset="relax">
+          <span class="pb-icon">🌴</span>
+          <span class="pb-label">Relax</span>
+          <span class="pb-desc">Everything allowed</span>
+        </button>
+        <button class="preset-btn" data-preset="kids">
+          <span class="pb-icon">🧸</span>
+          <span class="pb-label">Kids</span>
+          <span class="pb-desc">Only kids content</span>
+        </button>
+        <button class="preset-btn" data-preset="study">
+          <span class="pb-icon">📚</span>
+          <span class="pb-label">Study</span>
+          <span class="pb-desc">Focus mode, no distractions</span>
+        </button>
+        <button class="preset-btn" data-preset="night">
+          <span class="pb-icon">🌙</span>
+          <span class="pb-label">Night</span>
+          <span class="pb-desc">Chill music, no news</span>
+        </button>
+        <button class="preset-btn" data-preset="custom">
+          <span class="pb-icon">🎨</span>
+          <span class="pb-label">Custom</span>
+          <span class="pb-desc">Start from current settings</span>
+        </button>
+      </div>
+
+      <div class="m-label">Icon</div>
+      <div class="icon-grid" id="iconGrid">
+        <div class="icon-opt" data-icon="💼">💼</div>
+        <div class="icon-opt" data-icon="🌴">🌴</div>
+        <div class="icon-opt" data-icon="🧸">🧸</div>
+        <div class="icon-opt" data-icon="📚">📚</div>
+        <div class="icon-opt" data-icon="🌙">🌙</div>
+        <div class="icon-opt" data-icon="🎮">🎮</div>
+        <div class="icon-opt" data-icon="🎵">🎵</div>
+        <div class="icon-opt" data-icon="⚽">⚽</div>
+        <div class="icon-opt" data-icon="🍿">🍿</div>
+        <div class="icon-opt" data-icon="🧘">🧘</div>
+        <div class="icon-opt" data-icon="🚀">🚀</div>
+        <div class="icon-opt" data-icon="⭐">⭐</div>
+      </div>
+
+      <div class="m-label">Name</div>
+      <input type="text" id="pmName" placeholder="e.g. Work mode" maxlength="24" />
+
+      <div class="modal-actions">
+        <button class="btn btn-secondary" id="pmCancel">Cancel</button>
+        <button class="btn btn-primary" id="pmSave">Save</button>
+      </div>
+
+      <button class="modal-delete" id="pmDelete" style="display:none;">Delete this profile</button>
     </div>
-    <div class="changelog-content" id="changelogContent">
-      <div class="changelog-empty">Loading…</div>
-    </div>
   </div>
-
-  <div class="switch">
-    <span>Enable filter</span>
-    <input type="checkbox" id="enabled" />
-  </div>
-
-  <h3>Hide categories</h3>
-  <label><input type="checkbox" data-cat="games" /> 🎮 Games</label>
-  <label><input type="checkbox" data-cat="sports" /> ⚽ Sports</label>
-  <label><input type="checkbox" data-cat="politics" /> 🏛 Politics</label>
-  <label><input type="checkbox" data-cat="music" /> 🎵 Music</label>
-  <label><input type="checkbox" data-cat="news" /> 📰 News</label>
-  <label><input type="checkbox" data-cat="movies" /> 🎥 Movies</label>
-  <label><input type="checkbox" data-cat="tech" /> 💻 Tech</label>
-  <label><input type="checkbox" data-cat="crypto" /> 🪙 Crypto</label>
-  <label><input type="checkbox" data-cat="kids" /> 🧸 Kids</label>
-
-  <h3>Hide by language</h3>
-  <label><input type="checkbox" id="hideRussian" /> 🇷🇺 Hide Russian</label>
-  <label><input type="checkbox" id="hideEnglish" /> 🇬🇧 Hide English</label>
-  <div class="hint">Detected by title &amp; channel name</div>
-
-  <h3>Other</h3>
-  <label><input type="checkbox" id="hideShorts" /> Hide Shorts</label>
-  <label><input type="checkbox" id="hideWatched" /> Hide watched videos</label>
-
-  <h3>Video size</h3>
-  <select id="videoSize">
-    <option value="default">Default</option>
-    <option value="small">Small (6 per row)</option>
-    <option value="medium">Medium (4 per row)</option>
-    <option value="large">Large (2 per row)</option>
-    <option value="cinema">Cinema (1 per row)</option>
-  </select>
-
-  <h3>Custom block words</h3>
-  <div class="row">
-    <input type="text" id="kwInput" placeholder="e.g. standup" />
-    <button id="addKw">+</button>
-  </div>
-  <div class="keywords" id="kwList"></div>
-
-  <h3>Backup</h3>
-  <div class="row">
-    <button id="exportBtn" class="secondary">⬇ Export</button>
-    <button id="importBtn" class="secondary">⬆ Import</button>
-  </div>
-  <input type="file" id="importFile" accept="application/json,.json" style="display:none" />
-  <div class="hint" id="backupHint">Save your settings to a file or restore them.</div>
-
-  <button id="reset">Reset all</button>
 
   <script src="popup.js"></script>
+  <script src="notifications.js"></script>
 </body>
 </html>
