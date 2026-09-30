@@ -637,10 +637,6 @@ Providing this information significantly improves the ability to reproduce and r
 
 ---
 
-<p align="center">
-  <strong>YouTube Feed Filter</strong><br>
-  Take control of your YouTube feed.
-</p>
 
 
 The extension uses Manifest V3.
