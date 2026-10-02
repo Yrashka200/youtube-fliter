@@ -9,20 +9,12 @@
       "linkText": "x.com/Yrashka200"
     },
     {
-      "id": "test-001",
+      "id": "info1",
       "date": "2026-10-02",
-      "title": "Test 1",
-      "message": "Test",
-      "link": "",
-      "linkText": ""
-    },
-    {
-      "id": "test-002",
-      "date": "2026-10-02",
-      "title": "Test 2",
-      "message": "Test",
-      "link": "",
-      "linkText": ""
+      "title": "security system",
+      "message": "Hi! Thanks for installing this extension. Your safety, privacy, and a stable experience are important to us. Remember, if you have any doubts about how the extension works, you can always open an issue on GitHub.",
+      "link": "https://github.com/Yrashka200/youtube-fliter/issues/new",
+      "linkText": "Open Issue"
     }
   ]
 }
