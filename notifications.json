@@ -7,6 +7,22 @@
       "message": "Hi! Thank you for installing this extension! This extension is 100% free and Open Source, so please subscribe to the author: x.com/Yrashka200",
       "link": "https://x.com/Yrashka200",
       "linkText": "x.com/Yrashka200"
+    },
+    {
+      "id": "test-001",
+      "date": "2026-10-02",
+      "title": "Test 1",
+      "message": "Test",
+      "link": "",
+      "linkText": ""
+    },
+    {
+      "id": "test-002",
+      "date": "2026-10-02",
+      "title": "Test 2",
+      "message": "Test",
+      "link": "",
+      "linkText": ""
     }
   ]
 }
