@@ -1,6 +1,12 @@
 # Changelog
 
 
+## [1.4.0] - 2026-10-07
+## Changes:
+- Added Focus mode (setup time for block some content. Available modes: 15 minutes, 30 minutes, 1 hour, or a custom option.)
+- Added The ability to replace the classic YouTube background with your own (Current path: 🎨 Look/🎨Themes)
+
+
 ## [1.4.0] - 2026-09-29
 
 ## Changes:
