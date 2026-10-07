@@ -149,3 +149,181 @@ html[data-yt-opt-fx="1"] ytd-miniplayer * {
 html[data-yt-opt-video="1"] ytd-miniplayer video {
   preload: none;
 }
+
+/* ===== Custom background ===== */
+
+html[data-yt-custom-bg="1"] body,
+html[data-yt-custom-bg="1"] ytd-app {
+  background-image: var(--yt-custom-bg-url) !important;
+  background-size: cover !important;
+  background-position: center center !important;
+  background-attachment: fixed !important;
+  background-repeat: no-repeat !important;
+}
+
+html[data-yt-custom-bg="1"] ytd-app {
+  background-color: transparent !important;
+}
+
+/* Затемнение */
+html[data-yt-custom-bg="1"][data-yt-bg-dim="1"] body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Blur */
+html[data-yt-custom-bg="1"][data-yt-bg-blur="1"] body::before {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Основные контейнеры — прозрачные */
+html[data-yt-custom-bg="1"] ytd-rich-grid-renderer,
+html[data-yt-custom-bg="1"] ytd-watch-flexy,
+html[data-yt-custom-bg="1"] #content,
+html[data-yt-custom-bg="1"] #page-manager,
+html[data-yt-custom-bg="1"] ytd-browse {
+  background: transparent !important;
+}
+
+/* Карточки видео */
+html[data-yt-custom-bg="1"] ytd-rich-item-renderer,
+html[data-yt-custom-bg="1"] ytd-video-renderer,
+html[data-yt-custom-bg="1"] ytd-compact-video-renderer,
+html[data-yt-custom-bg="1"] yt-lockup-view-model {
+  background: rgba(15, 15, 15, 0.72) !important;
+  border-radius: 12px;
+  padding: 6px;
+}
+
+/* ===== Верхняя шапка ===== */
+html[data-yt-custom-bg="1"] #masthead-container,
+html[data-yt-custom-bg="1"] ytd-masthead,
+html[data-yt-custom-bg="1"] #masthead {
+  background: rgba(15, 15, 15, 0.6) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+html[data-yt-custom-bg="1"] ytd-masthead #background,
+html[data-yt-custom-bg="1"] #masthead-container #background {
+  background: transparent !important;
+}
+
+/* Поиск */
+html[data-yt-custom-bg="1"] ytd-searchbox #container,
+html[data-yt-custom-bg="1"] ytd-searchbox form,
+html[data-yt-custom-bg="1"] .ytd-searchbox {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+html[data-yt-custom-bg="1"] ytd-searchbox input,
+html[data-yt-custom-bg="1"] #search-input {
+  background: transparent !important;
+  color: #fff !important;
+}
+
+html[data-yt-custom-bg="1"] ytd-searchbox #search-icon-legacy,
+html[data-yt-custom-bg="1"] button#search-icon-legacy {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+/* ===== Боковая панель (гайд) ===== */
+html[data-yt-custom-bg="1"] ytd-mini-guide-renderer,
+html[data-yt-custom-bg="1"] #mini-guide,
+html[data-yt-custom-bg="1"] tp-yt-app-drawer#guide,
+html[data-yt-custom-bg="1"] #guide-content,
+html[data-yt-custom-bg="1"] ytd-guide-renderer,
+html[data-yt-custom-bg="1"] #guide-inner-content,
+html[data-yt-custom-bg="1"] ytd-guide-renderer #sections {
+  background: rgba(15, 15, 15, 0.72) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+html[data-yt-custom-bg="1"] tp-yt-app-drawer#guide #scrim,
+html[data-yt-custom-bg="1"] tp-yt-app-drawer#guide #backdrop {
+  background: rgba(0, 0, 0, 0.5) !important;
+}
+
+html[data-yt-custom-bg="1"] ytd-guide-entry-renderer,
+html[data-yt-custom-bg="1"] ytd-mini-guide-entry-renderer,
+html[data-yt-custom-bg="1"] ytd-guide-entry-renderer[active] #endpoint,
+html[data-yt-custom-bg="1"] ytd-guide-entry-renderer #endpoint {
+  background: transparent !important;
+}
+
+html[data-yt-custom-bg="1"] ytd-guide-entry-renderer:hover,
+html[data-yt-custom-bg="1"] ytd-guide-entry-renderer[active],
+html[data-yt-custom-bg="1"] ytd-mini-guide-entry-renderer:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-radius: 10px;
+}
+
+html[data-yt-custom-bg="1"] ytd-guide-section-renderer #items,
+html[data-yt-custom-bg="1"] ytd-guide-section-renderer {
+  background: transparent !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+html[data-yt-custom-bg="1"] ytd-guide-renderer #footer,
+html[data-yt-custom-bg="1"] #guide-renderer #footer {
+  background: transparent !important;
+}
+
+html[data-yt-custom-bg="1"] ytd-guide-entry-renderer yt-icon,
+html[data-yt-custom-bg="1"] ytd-guide-entry-renderer #endpoint,
+html[data-yt-custom-bg="1"] ytd-guide-entry-renderer yt-formatted-string {
+  color: #fff !important;
+}
+
+/* ===== Сайдбар на странице просмотра ===== */
+html[data-yt-custom-bg="1"] #secondary,
+html[data-yt-custom-bg="1"] ytd-watch-next-secondary-results-renderer {
+  background: transparent !important;
+}
+
+/* ===== Комментарии ===== */
+html[data-yt-custom-bg="1"] ytd-comments,
+html[data-yt-custom-bg="1"] #comments {
+  background: rgba(15, 15, 15, 0.6) !important;
+  border-radius: 12px;
+  padding: 8px;
+}
+
+/* ===== Чипсы (фильтры сверху главной) ===== */
+html[data-yt-custom-bg="1"] ytd-feed-filter-chip-bar-renderer,
+html[data-yt-custom-bg="1"] #chips-wrapper,
+html[data-yt-custom-bg="1"] yt-chip-cloud-renderer {
+  background: transparent !important;
+}
+
+html[data-yt-custom-bg="1"] yt-chip-cloud-chip-renderer,
+html[data-yt-custom-bg="1"] .ytChipShapeChip {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  color: #fff !important;
+}
+
+html[data-yt-custom-bg="1"] yt-chip-cloud-chip-renderer[selected],
+html[data-yt-custom-bg="1"] .ytChipShapeChip.selected {
+  background: rgba(255, 255, 255, 0.9) !important;
+  color: #000 !important;
+}
+
+/* Скроллбар */
+html[data-yt-custom-bg="1"] ::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+html[data-yt-custom-bg="1"] ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15) !important;
+}
+html[data-yt-custom-bg="1"] ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25) !important;
+}

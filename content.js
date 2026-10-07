@@ -36,17 +36,21 @@ const DEFAULT_SETTINGS = {
   optimizeVideos: true,
   optimizeEffects: true,
   optimizeScan: true,
-  optimizeDom: true
+  optimizeDom: true,
+  activeThemeId: "default"
 };
 
 let settings = { ...DEFAULT_SETTINGS };
 let settingsReady = false;
+let activeTheme = null;
+let focusState = { active: false, endsAt: 0, profileId: null };
 
 const PROCESSED_ATTR = "data-yt-filter-processed";
 const HIDDEN_ATTR = "data-yt-filter-hidden";
 const AD_HIDDEN_ATTR = "data-yt-ad-hidden";
 const VIRTUAL_ATTR = "data-yt-virtual";
 const PLACEHOLDER_ATTR = "data-yt-placeholder";
+const FOCUS_BANNER_ID = "yt-filter-focus-banner";
 
 const VIRTUAL_BUFFER_BOTTOM = 4;
 const VIRTUAL_BUFFER_TOP = 1;
@@ -150,14 +154,29 @@ if (!isMiniplayerFrame()) {
 async function loadSettings() {
   if (isMiniplayerFrame()) return;
 
-  let s = null;
   try {
     const res = await chrome.storage.sync.get(["settings"]);
-    s = res.settings || null;
+    if (res.settings) settings = { ...DEFAULT_SETTINGS, ...res.settings };
   } catch (e) {}
-  if (s) settings = { ...DEFAULT_SETTINGS, ...s };
+
+  try {
+    const r = await chrome.storage.local.get(["themes"]);
+    const list = Array.isArray(r.themes) ? r.themes : [];
+    activeTheme = list.find(t => t.id === settings.activeThemeId) || null;
+  } catch (e) {
+    activeTheme = null;
+  }
+
+  try {
+    const r = await chrome.storage.local.get(["focusState"]);
+    focusState = r.focusState && r.focusState.active ? r.focusState : { active: false, endsAt: 0, profileId: null };
+  } catch (e) {
+    focusState = { active: false, endsAt: 0, profileId: null };
+  }
+
   settingsReady = true;
   applyAll();
+  renderFocusBanner();
 }
 
 if (!isMiniplayerFrame()) {
@@ -166,10 +185,28 @@ if (!isMiniplayerFrame()) {
 
 chrome.storage.onChanged.addListener((changes, area) => {
   if (isMiniplayerFrame()) return;
+
   if (area === "sync" && changes.settings) {
     settings = { ...DEFAULT_SETTINGS, ...changes.settings.newValue };
-    settingsReady = true;
-    applyAll();
+    chrome.storage.local.get(["themes"], (r) => {
+      const list = Array.isArray(r.themes) ? r.themes : [];
+      activeTheme = list.find(t => t.id === settings.activeThemeId) || null;
+      settingsReady = true;
+      applyAll();
+    });
+    return;
+  }
+
+  if (area === "local" && changes.themes) {
+    const list = Array.isArray(changes.themes.newValue) ? changes.themes.newValue : [];
+    activeTheme = list.find(t => t.id === settings.activeThemeId) || null;
+    applyTheme();
+  }
+
+  if (area === "local" && changes.focusState) {
+    const fs = changes.focusState.newValue;
+    focusState = fs && fs.active ? fs : { active: false, endsAt: 0, profileId: null };
+    renderFocusBanner();
   }
 });
 
@@ -201,10 +238,15 @@ function applyAll() {
     root.removeAttribute("data-yt-opt-anim");
     root.removeAttribute("data-yt-opt-video");
     root.removeAttribute("data-yt-opt-fx");
+    root.removeAttribute("data-yt-custom-bg");
+    root.removeAttribute("data-yt-bg-dim");
+    root.removeAttribute("data-yt-bg-blur");
+    root.style.removeProperty("--yt-custom-bg-url");
     return;
   }
 
   applySize();
+  applyTheme();
   applyAdBlockAttr();
   applyOptimization();
 
@@ -227,6 +269,32 @@ function applySize() {
   } else {
     root.setAttribute("data-yt-size", settings.videoSize);
   }
+}
+
+function applyTheme() {
+  const root = document.documentElement;
+  if (!root) return;
+
+  const url = activeTheme && activeTheme.url ? activeTheme.url.trim() : "";
+  const on = !!url;
+
+  if (!on) {
+    root.removeAttribute("data-yt-custom-bg");
+    root.removeAttribute("data-yt-bg-dim");
+    root.removeAttribute("data-yt-bg-blur");
+    root.style.removeProperty("--yt-custom-bg-url");
+    return;
+  }
+
+  const safeUrl = url.replace(/"/g, "%22");
+  root.style.setProperty("--yt-custom-bg-url", `url("${safeUrl}")`);
+  root.setAttribute("data-yt-custom-bg", "1");
+
+  if (activeTheme.dim) root.setAttribute("data-yt-bg-dim", "1");
+  else root.removeAttribute("data-yt-bg-dim");
+
+  if (activeTheme.blur) root.setAttribute("data-yt-bg-blur", "1");
+  else root.removeAttribute("data-yt-bg-blur");
 }
 
 function applyAdBlockAttr() {
@@ -937,12 +1005,14 @@ window.addEventListener("yt-navigate-finish", () => {
   retryScans();
   watchSecondary();
   handleMiniplayerState();
+  renderFocusBanner();
 });
 
 window.addEventListener("yt-page-data-updated", () => {
   if (isMiniplayerFrame()) return;
   retryScans();
   handleMiniplayerState();
+  renderFocusBanner();
 });
 
 window.addEventListener("yt-navigate-start", () => {
@@ -1153,3 +1223,84 @@ document.addEventListener("keydown", (e) => {
     setTimeout(handleMiniplayerState, 1200);
   }
 }, true);
+
+/* ===== Focus banner on YouTube page ===== */
+
+let focusTickInterval = null;
+
+function fmtFocusTime(ms) {
+  if (ms < 0) ms = 0;
+  const total = Math.floor(ms / 1000);
+  const h = Math.floor(total / 3600);
+  const m = Math.floor((total % 3600) / 60);
+  const s = total % 60;
+  const pad = (n) => String(n).padStart(2, "0");
+  return h > 0 ? `${h}:${pad(m)}:${pad(s)}` : `${pad(m)}:${pad(s)}`;
+}
+
+function renderFocusBanner() {
+  if (isMiniplayerFrame()) return;
+  if (!document.body) return;
+
+  let banner = document.getElementById(FOCUS_BANNER_ID);
+
+  if (!focusState || !focusState.active || Date.now() >= focusState.endsAt) {
+    if (banner) banner.remove();
+    if (focusTickInterval) {
+      clearInterval(focusTickInterval);
+      focusTickInterval = null;
+    }
+    return;
+  }
+
+  if (!banner) {
+    banner = document.createElement("div");
+    banner.id = FOCUS_BANNER_ID;
+    banner.style.cssText = `
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      z-index: 2147483600;
+      background: linear-gradient(135deg, #2a1a1a, #3a1f1f);
+      border: 1px solid #4a2020;
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+      font-size: 12px;
+      color: #ff9999;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      pointer-events: none;
+      user-select: none;
+    `;
+    banner.innerHTML = `
+      <span style="font-size:14px;">🎯</span>
+      <span style="color:#fff;">Focus</span>
+      <span data-focus-time style="font-variant-numeric: tabular-nums; color:#fff; letter-spacing:0.5px;">--:--</span>
+    `;
+    document.body.appendChild(banner);
+  }
+
+  const timeEl = banner.querySelector("[data-focus-time]");
+  if (timeEl) timeEl.textContent = fmtFocusTime(focusState.endsAt - Date.now());
+
+  if (!focusTickInterval) {
+    focusTickInterval = setInterval(() => {
+      if (!focusState.active || Date.now() >= focusState.endsAt) {
+        clearInterval(focusTickInterval);
+        focusTickInterval = null;
+        const b = document.getElementById(FOCUS_BANNER_ID);
+        if (b) b.remove();
+        return;
+      }
+      const b = document.getElementById(FOCUS_BANNER_ID);
+      if (b) {
+        const t = b.querySelector("[data-focus-time]");
+        if (t) t.textContent = fmtFocusTime(focusState.endsAt - Date.now());
+      }
+    }, 1000);
+  }
+}

@@ -4,6 +4,7 @@ const GITHUB_BRANCH = "main";
 
 const MANIFEST_URL = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/${GITHUB_BRANCH}/manifest.json`;
 const CHANGELOG_URL = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/${GITHUB_BRANCH}/CHANGELOG.md`;
+const NOTIFICATIONS_URL = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/${GITHUB_BRANCH}/notifications.json`;
 const ZIP_URL = `https://github.com/${GITHUB_USER}/${GITHUB_REPO}/archive/refs/heads/${GITHUB_BRANCH}.zip`;
 
 function isNewerVersion(remote, local) {
@@ -81,6 +82,24 @@ async function fetchChangelog() {
   return await res.text();
 }
 
+async function fetchRemoteNotifications() {
+  const res = await fetch(NOTIFICATIONS_URL + "?t=" + Date.now(), { cache: "no-store" });
+  if (!res.ok) throw new Error("Notifications fetch failed: " + res.status);
+  const data = await res.json();
+  return Array.isArray(data.notifications) ? data.notifications : [];
+}
+
+async function fetchLocalNotifications() {
+  try {
+    const res = await fetch(chrome.runtime.getURL("notifications.json"), { cache: "no-store" });
+    if (!res.ok) return [];
+    const data = await res.json();
+    return Array.isArray(data.notifications) ? data.notifications : [];
+  } catch (e) {
+    return [];
+  }
+}
+
 async function checkForUpdates() {
   try {
     const localVersion = getLocalVersion();
@@ -108,6 +127,15 @@ async function checkForUpdates() {
         `).join("")
       : `<div class="changelog-empty">No changelog available.</div>`;
 
+    // Загружаем уведомления с GitHub, с fallback на локальный файл
+    let notifications = [];
+    try {
+      notifications = await fetchRemoteNotifications();
+    } catch (e) {
+      console.warn("Remote notifications failed, using local:", e);
+      notifications = await fetchLocalNotifications();
+    }
+
     const state = {
       lastCheck: Date.now(),
       localVersion,
@@ -115,6 +143,7 @@ async function checkForUpdates() {
       hasUpdate,
       downloadUrl: ZIP_URL,
       changelogHtml,
+      notifications,
       error: null
     };
 
@@ -129,6 +158,9 @@ async function checkForUpdates() {
 
     return state;
   } catch (err) {
+    // Даже при ошибке обновления пробуем отдать локальные уведомления
+    const localNotifications = await fetchLocalNotifications();
+
     const state = {
       lastCheck: Date.now(),
       localVersion: getLocalVersion(),
@@ -136,6 +168,7 @@ async function checkForUpdates() {
       hasUpdate: false,
       downloadUrl: ZIP_URL,
       changelogHtml: `<div class="changelog-empty">⚠ ${err.message}</div>`,
+      notifications: localNotifications,
       error: err.message
     };
     await chrome.storage.local.set({ updateState: state });

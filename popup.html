@@ -36,9 +36,7 @@
       gap: 6px;
     }
 
-    .header .title .logo {
-      font-size: 16px;
-    }
+    .header .title .logo { font-size: 16px; }
 
     .bell-wrap {
       position: relative;
@@ -68,6 +66,64 @@
       display: none;
     }
     .bell-wrap.has-new .dot { display: block; }
+
+    .focus-banner {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 10px 14px;
+      background: linear-gradient(135deg, #2a1a1a, #3a1f1f);
+      border-bottom: 1px solid #3a2020;
+      flex-shrink: 0;
+    }
+    .focus-banner.open { display: flex; }
+    .focus-banner .fb-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #ff9999;
+    }
+    .focus-banner .fb-icon {
+      font-size: 16px;
+      animation: focusPulse 1.6s infinite;
+    }
+    @keyframes focusPulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    .focus-banner .fb-time {
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.5px;
+    }
+    .focus-banner .fb-stop {
+      background: transparent;
+      border: 1px solid #4a2020;
+      color: #ff7777;
+      border-radius: 6px;
+      padding: 4px 8px;
+      font-size: 10px;
+      font-family: inherit;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background .15s;
+    }
+    .focus-banner .fb-stop:hover { background: #3a1a1a; }
+
+    body.focus-active .profiles-section,
+    body.focus-active .master,
+    body.focus-active .tabs,
+    body.focus-active .content {
+      pointer-events: none;
+      opacity: 0.45;
+      filter: grayscale(0.4);
+    }
+    body.focus-active .focus-banner { pointer-events: auto; opacity: 1; filter: none; }
 
     .profiles-section {
       background: #1a1a1a;
@@ -299,17 +355,10 @@
       letter-spacing: 0.5px;
     }
 
-    .card-head .card-icon {
-      font-size: 14px;
-    }
+    .card-head .card-icon { font-size: 14px; }
 
-    .card-body {
-      padding: 8px 12px 12px;
-    }
-
-    .card-body.no-pad {
-      padding: 4px 6px 6px;
-    }
+    .card-body { padding: 8px 12px 12px; }
+    .card-body.no-pad { padding: 4px 6px 6px; }
 
     .opt {
       display: flex;
@@ -412,9 +461,7 @@
     }
     .sub-opts.open { display: block; }
 
-    .sub-opts.red {
-      border-left-color: #3a2020;
-    }
+    .sub-opts.red { border-left-color: #3a2020; }
 
     .sub-opts .opt {
       padding: 5px 8px;
@@ -433,13 +480,8 @@
       transform: translateX(12px);
     }
 
-    .sub-opts .opt input[type="checkbox"]:checked {
-      background: #4caf50;
-    }
-
-    .sub-opts.red .opt input[type="checkbox"]:checked {
-      background: #ff0000;
-    }
+    .sub-opts .opt input[type="checkbox"]:checked { background: #4caf50; }
+    .sub-opts.red .opt input[type="checkbox"]:checked { background: #ff0000; }
 
     .kw-input-row {
       display: flex;
@@ -556,10 +598,7 @@
       font-size: 12px;
     }
 
-    .update-version {
-      color: #888;
-      font-size: 11px;
-    }
+    .update-version { color: #888; font-size: 11px; }
 
     .update-status {
       color: #888;
@@ -836,19 +875,11 @@
     }
     .donate-fake-btn:active { transform: translateY(0); }
 
-    .donate-fake-btn.gold {
-      background: linear-gradient(135deg, #f9a825, #e65100);
-    }
-    .donate-fake-btn.gold:hover {
-      box-shadow: 0 6px 16px rgba(249, 168, 37, 0.35);
-    }
+    .donate-fake-btn.gold { background: linear-gradient(135deg, #f9a825, #e65100); }
+    .donate-fake-btn.gold:hover { box-shadow: 0 6px 16px rgba(249, 168, 37, 0.35); }
 
-    .donate-fake-btn.diamond {
-      background: linear-gradient(135deg, #42a5f5, #1565c0);
-    }
-    .donate-fake-btn.diamond:hover {
-      box-shadow: 0 6px 16px rgba(66, 165, 245, 0.35);
-    }
+    .donate-fake-btn.diamond { background: linear-gradient(135deg, #42a5f5, #1565c0); }
+    .donate-fake-btn.diamond:hover { box-shadow: 0 6px 16px rgba(66, 165, 245, 0.35); }
 
     .donate-note {
       background: #1a1a1a;
@@ -1070,13 +1101,8 @@
       border-color: #ff0000;
       color: #fff;
     }
-    .preset-btn .pb-icon {
-      font-size: 22px;
-      line-height: 1;
-    }
-    .preset-btn .pb-label {
-      font-weight: 700;
-    }
+    .preset-btn .pb-icon { font-size: 22px; line-height: 1; }
+    .preset-btn .pb-label { font-weight: 700; }
     .preset-btn .pb-desc {
       font-size: 9px;
       color: #777;
@@ -1108,6 +1134,234 @@
       transition: background .15s;
     }
     .modal-delete:hover { background: #2a1a1a; }
+
+    .bg-src-tabs {
+      display: flex;
+      gap: 4px;
+      padding: 6px 0 2px;
+    }
+    .bg-src-tab {
+      flex: 1;
+      padding: 7px 8px;
+      background: #262626;
+      border: 1px solid #333;
+      border-radius: 8px;
+      color: #bbb;
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .15s;
+    }
+    .bg-src-tab:hover { background: #2f2f2f; color: #fff; }
+    .bg-src-tab.active {
+      background: #3a1a1a;
+      border-color: #ff0000;
+      color: #fff;
+    }
+    .bg-src-panel { display: none; }
+    .bg-src-panel.active { display: block; animation: fadeIn .2s ease; }
+
+    .bg-preview {
+      position: relative;
+      margin: 4px 0 6px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #333;
+      background: #111;
+    }
+    .bg-preview img {
+      display: block;
+      width: 100%;
+      height: 100px;
+      object-fit: cover;
+    }
+    .bg-preview-clear {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(0,0,0,0.7);
+      color: #fff;
+      font-size: 14px;
+      line-height: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: inherit;
+    }
+    .bg-preview-clear:hover { background: #ff0000; }
+
+    .theme-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 8px 8px 4px;
+    }
+
+    .theme-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px;
+      background: #232323;
+      border: 1px solid #2e2e2e;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: border-color .15s, background .15s;
+    }
+    .theme-item:hover { background: #282828; }
+    .theme-item.active {
+      border-color: #ff0000;
+      background: #2c1c1c;
+      box-shadow: 0 0 0 1px rgba(255,0,0,0.3);
+    }
+
+    .theme-thumb {
+      width: 48px;
+      height: 32px;
+      border-radius: 6px;
+      background: #111;
+      background-size: cover;
+      background-position: center;
+      border: 1px solid #333;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #666;
+      font-size: 16px;
+    }
+    .theme-thumb.default {
+      background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+    }
+
+    .theme-info {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+    .theme-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: #eee;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .theme-sub {
+      font-size: 10px;
+      color: #777;
+    }
+
+    .theme-actions {
+      display: flex;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+    .theme-act {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: transparent;
+      border: 1px solid transparent;
+      color: #888;
+      cursor: pointer;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: inherit;
+      padding: 0;
+      transition: all .15s;
+    }
+    .theme-act:hover { color: #fff; background: #333; }
+    .theme-act.del:hover { color: #ff6666; background: #2a1a1a; }
+
+    .theme-add-row {
+      padding: 2px 8px 4px;
+      display: flex;
+      gap: 6px;
+    }
+
+    .theme-modal .icon-grid { grid-template-columns: repeat(6, 1fr); }
+
+    .theme-color-row {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .theme-color {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: transform .15s;
+    }
+    .theme-color:hover { transform: scale(1.1); }
+    .theme-color.active { border-color: #fff; }
+
+    .focus-setup {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 8px 8px 4px;
+    }
+    .focus-row {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .focus-row label {
+      font-size: 11px;
+      color: #888;
+      min-width: 62px;
+    }
+    .focus-select, .focus-input {
+      flex: 1;
+      background: #262626;
+      color: #eee;
+      border: 1px solid #333;
+      border-radius: 6px;
+      padding: 7px 9px;
+      font-size: 12px;
+      font-family: inherit;
+    }
+    .focus-select:focus, .focus-input:focus {
+      outline: none;
+      border-color: #ff0000;
+    }
+    .focus-preset-row {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+      padding: 0 0 4px 68px;
+    }
+    .focus-preset {
+      padding: 4px 9px;
+      background: #262626;
+      border: 1px solid #333;
+      border-radius: 12px;
+      color: #bbb;
+      font-size: 10px;
+      font-family: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .15s;
+    }
+    .focus-preset:hover { background: #2f2f2f; color: #fff; }
+    .focus-preset.active {
+      background: #3a1a1a;
+      border-color: #ff0000;
+      color: #fff;
+    }
   </style>
 </head>
 <body>
@@ -1122,6 +1376,15 @@
       </svg>
       <span class="dot"></span>
     </div>
+  </div>
+
+  <div class="focus-banner" id="focusBanner">
+    <div class="fb-left">
+      <span class="fb-icon">🎯</span>
+      <span id="focusLabel">Focus mode</span>
+    </div>
+    <span class="fb-time" id="focusTime">00:00</span>
+    <button class="fb-stop" id="focusStop">Stop</button>
   </div>
 
   <div id="notifPanel"></div>
@@ -1163,6 +1426,37 @@
   <div class="content">
 
     <div class="tab-panel active" data-panel="filter">
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-icon">🎯</span>
+          <span>Focus mode</span>
+        </div>
+        <div class="card-body no-pad">
+          <div class="focus-setup">
+            <div class="focus-row">
+              <label for="focusProfile">Profile</label>
+              <select id="focusProfile" class="focus-select"></select>
+            </div>
+            <div class="focus-row">
+              <label for="focusDuration">Duration</label>
+              <input type="number" id="focusDuration" class="focus-input" min="1" max="600" value="60" />
+            </div>
+            <div class="focus-preset-row" id="focusPresets">
+              <button class="focus-preset" data-min="15">15m</button>
+              <button class="focus-preset" data-min="30">30m</button>
+              <button class="focus-preset active" data-min="60">1h</button>
+              <button class="focus-preset" data-min="120">2h</button>
+            </div>
+            <button class="btn btn-primary" id="focusStart" style="width:100%; padding:10px; font-size:13px;">
+              🎯 Start Focus Mode
+            </button>
+          </div>
+          <div class="hint" style="padding: 0 8px 8px;">
+            Blocks everything except the selected profile until the timer ends.
+          </div>
+        </div>
+      </div>
 
       <div class="card">
         <div class="card-head">
@@ -1385,6 +1679,22 @@
         </div>
       </div>
 
+      <div class="card">
+        <div class="card-head">
+          <span class="card-icon">🎨</span>
+          <span>Themes</span>
+        </div>
+        <div class="card-body no-pad">
+          <div id="themeList" class="theme-list"></div>
+          <div class="theme-add-row">
+            <button class="btn btn-secondary" id="themeAdd" style="flex:1;">＋ Add theme</button>
+          </div>
+          <div class="hint" style="padding: 4px 8px 6px;">
+            Themes store your background. Active theme applies to all YouTube tabs.
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <div class="tab-panel" data-panel="donate">
@@ -1556,6 +1866,69 @@
       </div>
 
       <button class="modal-delete" id="pmDelete" style="display:none;">Delete this profile</button>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="themeModal">
+    <div class="modal theme-modal">
+      <div class="m-title" id="tmTitle">New theme</div>
+      <div class="m-sub" id="tmSub">Set a name and background.</div>
+
+      <div class="m-label">Name</div>
+      <input type="text" id="tmName" placeholder="e.g. Anime, Nature" maxlength="24" />
+
+      <div class="m-label">Source</div>
+      <div class="bg-src-tabs">
+        <button class="bg-src-tab active" data-src="file" id="tmSrcFile">📁 From file</button>
+        <button class="bg-src-tab" data-src="url" id="tmSrcUrl">🔗 From URL</button>
+      </div>
+
+      <div class="bg-src-panel active" data-src-panel="file" id="tmPanelFile">
+        <div class="kw-input-row" style="padding: 4px 0;">
+          <button class="btn btn-secondary" id="tmPickFile" style="flex:1;">
+            📁 Choose image…
+          </button>
+        </div>
+        <div class="hint" style="padding: 0 0 4px;" id="tmFileName">
+          No file selected.
+        </div>
+        <input type="file" id="tmFile" accept="image/*" style="display:none" />
+      </div>
+
+      <div class="bg-src-panel" data-src-panel="url" id="tmPanelUrl">
+        <div class="kw-input-row" style="padding: 4px 0;">
+          <input type="text" id="tmUrl" placeholder="https://example.com/bg.jpg" />
+        </div>
+        <div class="hint" style="padding: 0 0 4px;">
+          Direct image URL. Press Enter to preview.
+        </div>
+      </div>
+
+      <div class="m-label">Preview</div>
+      <div class="bg-preview" id="tmPreviewWrap" style="display:none;">
+        <img id="tmPreviewImg" alt="preview" />
+        <button class="bg-preview-clear" id="tmClearImg" title="Remove">×</button>
+      </div>
+      <div class="hint" id="tmPreviewEmpty" style="padding: 0 0 4px;">
+        No image — this will be the YouTube default.
+      </div>
+
+      <div class="m-label">Effects</div>
+      <div class="opt" style="padding: 5px 0;">
+        <div class="opt-text"><span class="opt-title">Dim</span></div>
+        <input type="checkbox" id="tmDim" />
+      </div>
+      <div class="opt" style="padding: 5px 0;">
+        <div class="opt-text"><span class="opt-title">Blur</span></div>
+        <input type="checkbox" id="tmBlur" />
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-secondary" id="tmCancel">Cancel</button>
+        <button class="btn btn-primary" id="tmSave">Save</button>
+      </div>
+
+      <button class="modal-delete" id="tmDelete" style="display:none;">Delete this theme</button>
     </div>
   </div>
 

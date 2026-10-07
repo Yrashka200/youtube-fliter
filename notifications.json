@@ -7,14 +7,6 @@
       "message": "Hi! Thank you for installing this extension! This extension is 100% free and Open Source, so please subscribe to the author: x.com/Yrashka200",
       "link": "https://x.com/Yrashka200",
       "linkText": "x.com/Yrashka200"
-    },
-    {
-      "id": "info1",
-      "date": "2026-10-02",
-      "title": "security system",
-      "message": "Hi! Thanks for installing this extension. Your safety, privacy, and a stable experience are important to us. Remember, if you have any doubts about how the extension works, you can always open an issue on GitHub.",
-      "link": "https://github.com/Yrashka200/youtube-fliter/issues/new",
-      "linkText": "Open Issue"
     }
   ]
 }
