@@ -1,7 +1,7 @@
 const SEEN_KEY = "seenNotifications";
 
 async function loadNotifications() {
-  // 1. Основной источник — updateState (его обновляет updater.js с GitHub)
+  
   try {
     const res = await chrome.storage.local.get(["updateState"]);
     const state = res.updateState;
@@ -12,7 +12,7 @@ async function loadNotifications() {
     console.warn("updateState read failed:", e);
   }
 
-  // 2. Fallback — локальный notifications.json (первый запуск / офлайн)
+
   try {
     const res = await fetch(chrome.runtime.getURL("notifications.json"), { cache: "no-store" });
     if (!res.ok) throw new Error("Failed to load notifications");
@@ -105,7 +105,7 @@ document.getElementById("bellBtn").addEventListener("click", async () => {
   }
 });
 
-// Автообновление уведомлений, когда background перезапишет updateState
+
 chrome.storage.onChanged.addListener((changes, area) => {
   if (area === "local" && changes.updateState) {
     renderNotifications();
