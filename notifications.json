@@ -1,12 +1,16 @@
 {
   "notifications": [
     {
-      "id": "welcome-001",
-      "date": "2026-09-26",
-      "title": "Welcome!",
-      "message": "Hi! Thank you for installing this extension! This extension is 100% free and Open Source, so please subscribe to the author: x.com/Yrashka200",
-      "link": "https://x.com/Yrashka200",
-      "linkText": "x.com/Yrashka200"
+      "id": "existing-1",
+      "title": "Thanks for dowloading YouTube Filter!",
+      "message": "Hey! Thanks for installing this extension! I hope you enjoy your experience with it.",
+      "date": "2026-01-01"
+    },
+    {
+      "id": "halloween-2026-1",
+      "title": "Halloween 2026 is Coming 🎃 — [from Yrashka200]",
+      "message": "Boo! Yrashka200 here. Halloween 2026 is coming, and I wanted to wish you a spooky-tastic holiday in advance! May your pumpkins glow, your costumes shine, and your candy bags overflow. And a huge thank you for using YouTube Filter — you're the reason it keeps getting better. Stay safe, stay spooky, and have a fang-tastic Halloween! 👻",
+      "date": "2026-10-31"
     }
   ]
 }
