@@ -2,448 +2,399 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
   <title>Welcome to YouTube Feed Filter</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      color-scheme: dark;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #f5f5f5;
+      background: #101113;
+      font-synthesis: none;
+    }
+
+    * { box-sizing: border-box; }
 
     body {
+      min-width: 320px;
       min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
-      background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
-      color: #eee;
-      padding: 24px;
+      margin: 0;
+      padding: 48px 20px;
+      background:
+        radial-gradient(ellipse at 50% -20%, rgba(255, 40, 40, .18), transparent 55%),
+        #101113;
     }
+
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+
+    .shell { max-width: 820px; margin: 0 auto; }
+    .brand { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
+    .brand-icon {
+      display: grid;
+      width: 44px;
+      height: 44px;
+      place-items: center;
+      border: 1px solid #452323;
+      border-radius: 14px;
+      background: #251616;
+      font-size: 23px;
+    }
+    .brand-name { font-size: 14px; font-weight: 750; letter-spacing: .02em; }
+    .brand-caption { margin-top: 3px; color: #92949b; font-size: 12px; }
 
     .card {
-      max-width: 620px;
-      width: 100%;
-      background: #1c1c1c;
-      border: 1px solid #2a2a2a;
-      border-radius: 16px;
-      padding: 32px 32px 24px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-      animation: fadeIn .5s ease;
-      display: flex;
-      flex-direction: column;
-      min-height: 560px;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(12px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .header {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .logo {
-      font-size: 44px;
-      margin-bottom: 6px;
-      filter: drop-shadow(0 4px 12px rgba(255, 0, 0, 0.4));
-      transition: transform .3s;
-    }
-
-    h1 {
-      font-size: 22px;
-      font-weight: 700;
-      background: linear-gradient(90deg, #ff0000, #ff5555);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .subtitle {
-      color: #888;
-      font-size: 13px;
-      margin-top: 4px;
-    }
-
-    .dots {
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-      margin-bottom: 22px;
-    }
-
-    .dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #333;
-      transition: all .3s ease;
-      cursor: pointer;
-    }
-
-    .dot.active {
-      background: #ff0000;
-      width: 24px;
-      border-radius: 4px;
-    }
-
-    .dot.done { background: #ff5555; }
-
-    .slides-wrap {
-      flex: 1;
-      position: relative;
       overflow: hidden;
+      border: 1px solid #2b2c31;
+      border-radius: 20px;
+      background: rgba(25, 26, 30, .96);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, .35);
     }
-
-    .slide {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 16px;
-      opacity: 0;
-      transform: translateX(40px);
-      transition: opacity .35s ease, transform .35s ease;
-      pointer-events: none;
-      overflow-y: auto;
-    }
-
-    .slide.active {
-      opacity: 1;
-      transform: translateX(0);
-      pointer-events: auto;
-      position: relative;
-    }
-
-    .slide.exit-left {
-      opacity: 0;
-      transform: translateX(-40px);
-    }
-
-    .slide-icon {
-      font-size: 56px;
-      margin-bottom: 16px;
-      line-height: 1;
-    }
-
-    .slide-title {
-      font-size: 20px;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 12px;
-    }
-
-    .slide-text {
-      font-size: 14px;
-      line-height: 1.65;
-      color: #bbb;
-      max-width: 460px;
-    }
-
-    .slide-text b { color: #fff; }
-    .slide-text code {
-      background: #2a2a2a;
-      padding: 1px 6px;
-      border-radius: 4px;
-      font-size: 12px;
-      color: #ffaa88;
-    }
-
-    .feature-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      width: 100%;
-      max-width: 480px;
-      margin-top: 16px;
-      text-align: left;
-    }
-
-    .feature-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      background: #151515;
-      border: 1px solid #262626;
-      border-radius: 10px;
-      padding: 12px 14px;
-      font-size: 13px;
-      color: #ddd;
-      line-height: 1.45;
-    }
-
-    .feature-item .fi-icon {
-      font-size: 20px;
-      flex-shrink: 0;
-      width: 26px;
-      text-align: center;
-      margin-top: 1px;
-    }
-
-    .feature-item b { color: #fff; }
-
-    .badge {
-      display: inline-block;
-      background: #2a1a1a;
+    .card-head { padding: 32px 38px 22px; }
+    .eyebrow {
       color: #ff7777;
       font-size: 11px;
-      font-weight: 600;
-      padding: 3px 9px;
-      border-radius: 20px;
-      margin-bottom: 12px;
-      border: 1px solid #3a2020;
+      font-weight: 800;
+      letter-spacing: .13em;
+      text-transform: uppercase;
     }
+    h1 { margin: 10px 0 8px; font-size: clamp(26px, 5vw, 36px); letter-spacing: -.035em; }
+    .lead { max-width: 650px; margin: 0; color: #b7b8bf; font-size: 15px; line-height: 1.65; }
 
-    .nav {
-      display: flex;
-      gap: 10px;
-      margin-top: 20px;
-    }
+    .progress { height: 3px; background: #303137; }
+    .progress-fill { width: 0; height: 100%; background: #ff3838; transition: width .25s ease; }
+    .content { padding: 28px 38px 30px; }
+    .step { display: none; animation: appear .2s ease-out; }
+    .step.active { display: block; }
+    @keyframes appear { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
 
-    .nav button {
-      flex: 1;
-      padding: 13px 18px;
-      font-size: 14px;
-      font-weight: 700;
-      border: none;
+    h2 { margin: 0 0 8px; font-size: 21px; letter-spacing: -.02em; }
+    .description { margin: 0 0 22px; color: #a7a8af; font-size: 14px; line-height: 1.6; }
+    .guide-note {
+      margin: 0 0 20px;
+      padding: 13px 15px;
+      border: 1px solid #35363c;
+      border-left: 3px solid #ff5555;
       border-radius: 10px;
+      background: #202126;
+      color: #d3d3d8;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    .guide-note[hidden] { display: none; }
+    .choice-grid, .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 11px; }
+    .choice {
+      min-height: 116px;
+      padding: 18px;
+      text-align: left;
+      color: #f5f5f5;
+      border: 1px solid #393a40;
+      border-radius: 14px;
+      background: #202126;
+      transition: border-color .15s, background .15s, transform .15s;
+    }
+    .choice:hover { transform: translateY(-2px); border-color: #ff5555; background: #271d1f; }
+    .choice-icon { display: block; margin-bottom: 11px; font-size: 23px; }
+    .choice strong { display: block; margin-bottom: 5px; font-size: 14px; }
+    .choice span:last-child { color: #a9aab1; font-size: 12px; line-height: 1.5; }
+
+    .options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px; }
+    .option {
+      display: flex;
+      min-height: 48px;
+      align-items: center;
+      gap: 9px;
+      padding: 10px 12px;
+      border: 1px solid #35363c;
+      border-radius: 10px;
+      background: #202126;
+      color: #e7e7ea;
+      font-size: 13px;
       cursor: pointer;
-      transition: transform .15s, background .15s, opacity .15s;
-      font-family: inherit;
     }
+    .option:hover { border-color: #55565e; }
+    .option input { width: 16px; height: 16px; margin: 0; accent-color: #ff4242; }
 
-    .nav button:active { transform: scale(0.98); }
-
-    .btn-primary {
-      background: #ff0000;
-      color: #fff;
+    .field { display: grid; gap: 8px; margin-top: 20px; }
+    .field label, .group-label { color: #e6e6e9; font-size: 13px; font-weight: 700; }
+    .field input, .field select {
+      width: 100%;
+      min-height: 44px;
+      padding: 10px 12px;
+      border: 1px solid #3a3b42;
+      border-radius: 9px;
+      outline: none;
+      background: #15161a;
+      color: #f5f5f5;
     }
-    .btn-primary:hover { background: #cc0000; }
-
-    .btn-secondary {
-      background: #2a2a2a;
-      color: #ddd;
+    .field input:focus, .field select:focus { border-color: #ff5555; box-shadow: 0 0 0 3px rgba(255, 64, 64, .12); }
+    .hint { margin: -2px 0 0; color: #92939a; font-size: 12px; line-height: 1.5; }
+    .group { margin-top: 23px; }
+    .group-label { display: block; margin-bottom: 10px; }
+    .sub-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 10px 0 0 25px; }
+    .sub-options .option { min-height: 40px; padding: 8px 10px; font-size: 12px; }
+    .summary {
+      padding: 16px;
+      border: 1px solid #35363c;
+      border-radius: 12px;
+      background: #15161a;
+      color: #c9c9ce;
+      font-size: 13px;
+      line-height: 1.8;
     }
-    .btn-secondary:hover { background: #3a3a3a; }
-
-    .btn-secondary:disabled {
-      opacity: 0.35;
-      cursor: default;
-    }
-
-    .btn-ghost {
-      background: transparent;
-      color: #777;
-      flex: 0 0 auto;
-      padding: 13px 16px;
-    }
-    .btn-ghost:hover { color: #aaa; }
+    .summary strong { color: #fff; }
+    .error { min-height: 20px; margin-top: 12px; color: #ff8e8e; font-size: 13px; }
+    .error:empty { display: none; }
 
     .footer {
-      margin-top: 14px;
-      font-size: 11px;
-      color: #555;
-      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 18px 38px;
+      border-top: 1px solid #2d2e33;
+      background: #191a1e;
     }
-
-    .feedback {
-      background: #201a1a;
-      border: 1px solid #3a2020;
-      border-radius: 12px;
-      padding: 14px 16px;
-      margin-top: 16px;
+    .step-count { color: #92939a; font-size: 12px; }
+    .actions { display: flex; gap: 9px; }
+    .btn {
+      min-height: 42px;
+      padding: 0 17px;
+      border: 1px solid #3a3b42;
+      border-radius: 9px;
+      background: #24252a;
+      color: #e8e8eb;
       font-size: 13px;
-      color: #ccc;
-      line-height: 1.5;
-      text-align: center;
+      font-weight: 700;
     }
+    .btn:hover { background: #303137; }
+    .btn.primary { border-color: #f23838; background: #ed3030; color: white; }
+    .btn.primary:hover { background: #ff4545; }
+    .btn:disabled { opacity: .45; cursor: default; }
+    .footer[hidden] { display: none; }
+    .success { padding: 26px 0 12px; text-align: center; }
+    .success-icon { font-size: 48px; }
+    .success h2 { margin-top: 13px; }
+    .success p { max-width: 540px; margin: 10px auto 22px; color: #b7b8bf; font-size: 14px; line-height: 1.65; }
+    .fine-print { margin-top: 18px; color: #74767e; font-size: 11px; text-align: center; }
+    .fine-print a { color: #c1c1c6; }
 
-    .feedback a {
-      color: #ff5555;
-      text-decoration: none;
-      font-weight: 600;
-      word-break: break-all;
+    @media (max-width: 620px) {
+      body { padding: 22px 12px; }
+      .card-head { padding: 25px 20px 19px; }
+      .content { padding: 23px 20px 25px; }
+      .footer { padding: 15px 20px; }
+      .options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .footer { align-items: flex-start; flex-direction: column; }
+      .actions { width: 100%; }
+      .actions .btn { flex: 1; }
     }
-    .feedback a:hover { text-decoration: underline; }
+    @media (max-width: 390px) {
+      .choice-grid, .grid, .sub-options { grid-template-columns: 1fr; }
+      .options { grid-template-columns: 1fr 1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
   </style>
 </head>
 <body>
-  <div class="card">
-    <div class="header">
-      <div class="logo" id="logo">🎬</div>
-      <h1>YouTube Feed Filter</h1>
-      <p class="subtitle">Quick setup guide</p>
+  <main class="shell">
+    <div class="brand">
+      <div class="brand-icon" aria-hidden="true">🎬</div>
+      <div>
+        <div class="brand-name">YouTube Feed Filter</div>
+        <div class="brand-caption">A calmer, more personal YouTube</div>
+      </div>
     </div>
 
-    <div class="dots" id="dots"></div>
+    <section class="card" aria-labelledby="pageTitle">
+      <header class="card-head">
+        <div class="eyebrow" id="eyebrow">Let’s set things up</div>
+        <h1 id="pageTitle">Welcome!</h1>
+        <p class="lead" id="pageLead">A few quick choices will shape your YouTube experience. You can change everything later.</p>
+      </header>
+      <div class="progress" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="content">
+        <section class="step active" data-step="question">
+          <h2>Have you used YouTube Feed Filter before?</h2>
+          <p class="description">Choose the path that feels right. You can load a config file or create your own.</p>
+          <div class="choice-grid">
+            <button type="button" class="choice" id="newUser">
+              <span class="choice-icon" aria-hidden="true">👋</span>
+              <strong>No, this is my first time</strong>
+              <span>Guide me through the features, then help me create a profile.</span>
+            </button>
+            <button type="button" class="choice" id="returningUser">
+              <span class="choice-icon" aria-hidden="true">⚙️</span>
+              <strong>Yes, I’ve used it before</strong>
+              <span>Load a configuration file or build a new config.</span>
+            </button>
+          </div>
+        </section>
 
-    <div class="slides-wrap" id="slidesWrap">
+        <section class="step" data-step="experienced">
+          <h2>Choose your setup</h2>
+          <p class="description">Load a YouTube Feed Filter configuration file, or create a new config from scratch.</p>
+          <div class="choice-grid">
+            <button type="button" class="choice" id="uploadConfig">
+              <span class="choice-icon" aria-hidden="true">📂</span>
+              <strong>Load a config file</strong>
+              <span>Select a JSON file exported from YouTube Feed Filter.</span>
+            </button>
+            <button type="button" class="choice" id="buildConfig">
+              <span class="choice-icon" aria-hidden="true">🛠</span>
+              <strong>Build a new config</strong>
+              <span>Choose each filter and setting yourself.</span>
+            </button>
+          </div>
+          <input type="file" id="configFile" accept=".json,application/json" hidden />
+          <div class="error" id="importError" role="alert"></div>
+        </section>
 
-      <div class="slide active">
-        <div class="slide-icon">👋</div>
-        <div class="slide-title">Welcome!</div>
-        <div class="slide-text">
-          Thanks for installing <b>YouTube Feed Filter</b>.<br><br>
-          This extension helps you clean up your YouTube feed — hide unwanted
-          categories, block ads, filter by language and much more.<br><br>
-          Let's take a quick tour of what it can do.
-        </div>
+        <section class="step" data-step="tour">
+          <h2>Make your feed yours</h2>
+          <p class="description">YouTube Feed Filter works on your YouTube pages. Your choices are saved in a profile you can switch or edit from the extension popup.</p>
+          <div class="guide-note">
+            You’ll choose topics and words to hide, language filters, Shorts and watched-video behavior, video layout, ads, and performance options. Existing profiles are kept as they are.
+          </div>
+          <div class="grid">
+            <div class="option"><span aria-hidden="true">📂</span><span>Topic filters</span></div>
+            <div class="option"><span aria-hidden="true">🌍</span><span>Language & keywords</span></div>
+            <div class="option"><span aria-hidden="true">📱</span><span>Feed & layout</span></div>
+            <div class="option"><span aria-hidden="true">🛡</span><span>Ads & performance</span></div>
+          </div>
+          <div class="guide-note" style="margin-top:16px;margin-bottom:0">
+            Later, the popup also lets you create more profiles, start a timed Focus session, customize the YouTube background, view watch-time stats, and import or export a backup.
+          </div>
+        </section>
+
+        <section class="step" data-step="topics">
+          <h2>Choose topics to hide</h2>
+          <p class="description">Select any categories you don’t want in your recommendations. Leave them all unchecked to keep every topic.</p>
+          <div class="guide-note" data-guide>
+            The extension checks video titles, channel names, and descriptions for topic signals. Topic matching is automatic; you can fine-tune it later in the popup.
+          </div>
+          <div class="options">
+            <label class="option"><input type="checkbox" data-category="games" />🎮 Games</label>
+            <label class="option"><input type="checkbox" data-category="sports" />⚽ Sports</label>
+            <label class="option"><input type="checkbox" data-category="politics" />🏛 Politics</label>
+            <label class="option"><input type="checkbox" data-category="music" />🎵 Music</label>
+            <label class="option"><input type="checkbox" data-category="news" />📰 News</label>
+            <label class="option"><input type="checkbox" data-category="movies" />🎥 Movies</label>
+            <label class="option"><input type="checkbox" data-category="tech" />💻 Tech</label>
+            <label class="option"><input type="checkbox" data-category="crypto" />🪙 Crypto</label>
+            <label class="option"><input type="checkbox" data-category="kids" />🧸 Kids</label>
+          </div>
+        </section>
+
+        <section class="step" data-step="language">
+          <h2>Filter language and specific words</h2>
+          <p class="description">Use language filters for broad cleanup, or add your own words for specific topics you never want to see.</p>
+          <div class="guide-note" data-guide>
+            Language is estimated from video titles and channel names. Custom keywords are matched against video text; they work alongside category filters.
+          </div>
+          <div class="options">
+            <label class="option"><input type="checkbox" id="hideRussian" />🇷🇺 Hide Russian</label>
+            <label class="option"><input type="checkbox" id="hideEnglish" />🇬🇧 Hide English</label>
+          </div>
+          <div class="field">
+            <label for="keywords">Words or phrases to hide</label>
+            <input id="keywords" type="text" placeholder="e.g. spoilers, reaction, drama" autocomplete="off" />
+            <p class="hint">Separate multiple words or phrases with commas.</p>
+          </div>
+        </section>
+
+        <section class="step" data-step="feed">
+          <h2>Shape your viewing experience</h2>
+          <p class="description">Choose what gets removed and how many videos you see across a row.</p>
+          <div class="guide-note" data-guide>
+            “Hide watched” removes videos watched past 90%. Picture-in-Picture controls whether YouTube’s PiP button is available. You can adjust any of these later.
+          </div>
+          <div class="options">
+            <label class="option"><input type="checkbox" id="hideShorts" />🚫 Hide Shorts</label>
+            <label class="option"><input type="checkbox" id="hideWatched" checked />👁 Hide watched videos</label>
+            <label class="option"><input type="checkbox" id="pipEnabled" checked />🪟 Enable Picture-in-Picture</label>
+          </div>
+          <div class="field">
+            <label for="videoSize">Video layout</label>
+            <select id="videoSize">
+              <option value="default">Default — let YouTube decide</option>
+              <option value="small">Small — 6 videos per row</option>
+              <option value="medium">Medium — 4 videos per row</option>
+              <option value="large">Large — 2 videos per row</option>
+              <option value="cinema">Cinema — 1 wide video per row</option>
+            </select>
+          </div>
+        </section>
+
+        <section class="step" data-step="extras">
+          <h2>Ads and performance</h2>
+          <p class="description">Choose whether to use the extension’s ad controls and optional performance optimizations.</p>
+          <div class="guide-note" data-guide>
+            Ad controls can hide page promotions and handle some video ads. YouTube changes frequently, so ad filtering may not catch every ad. Optimization reduces effects and previews; it can change how YouTube looks.
+          </div>
+          <div class="group">
+            <span class="group-label">Ad filtering</span>
+            <label class="option"><input type="checkbox" id="blockAds" checked />🛡 Enable ad filtering</label>
+            <div class="sub-options">
+              <label class="option"><input type="checkbox" id="blockAdsVideo" checked />Video ads</label>
+              <label class="option"><input type="checkbox" id="blockAdsBanners" checked />Banner promotions</label>
+              <label class="option"><input type="checkbox" id="blockAdsPopups" checked />Anti-adblock popups</label>
+              <label class="option"><input type="checkbox" id="blockAdsNetwork" checked />Ad network requests</label>
+            </div>
+          </div>
+          <div class="group">
+            <span class="group-label">Performance mode</span>
+            <label class="option"><input type="checkbox" id="optimize" />⚡ Enable performance mode</label>
+            <div class="sub-options">
+              <label class="option"><input type="checkbox" id="optimizeAnimations" checked />Reduce animations</label>
+              <label class="option"><input type="checkbox" id="optimizeVideos" checked />Pause previews</label>
+              <label class="option"><input type="checkbox" id="optimizeEffects" checked />Reduce visual effects</label>
+              <label class="option"><input type="checkbox" id="optimizeScan" checked />Reduce page scanning</label>
+              <label class="option"><input type="checkbox" id="optimizeDom" checked />Optimize off-screen items</label>
+            </div>
+          </div>
+        </section>
+
+        <section class="step" data-step="profile">
+          <h2>Name your profile</h2>
+          <p class="description">This saves your choices as a new profile and makes it active. Your existing profiles and settings will not be deleted.</p>
+          <div class="guide-note" data-guide>
+            Profiles are separate sets of settings: for example, make one for Work and another for relaxing. Switch or edit them any time from the profile row in the extension popup.
+          </div>
+          <div class="field" style="margin-top:0">
+            <label for="profileName">Profile name</label>
+            <input id="profileName" type="text" value="My YouTube" maxlength="40" />
+            <p class="hint">You can create additional profiles, focus sessions, themes, and backups from the extension popup.</p>
+          </div>
+          <div class="group">
+            <span class="group-label">Your setup</span>
+            <div class="summary" id="summary"></div>
+          </div>
+          <div class="error" id="saveError" role="alert"></div>
+        </section>
+
+        <section class="step" data-step="success">
+          <div class="success">
+            <div class="success-icon" aria-hidden="true">✅</div>
+            <h2>Your profile is ready</h2>
+            <p id="successMessage">Your settings have been saved. Open YouTube and use the extension icon in your toolbar whenever you want to make changes.</p>
+            <button type="button" class="btn primary" id="openYoutube">Open YouTube</button>
+          </div>
+        </section>
       </div>
-
-      <div class="slide">
-        <div class="slide-icon">🚫</div>
-        <div class="slide-title">Hide by category</div>
-        <div class="slide-text">
-          Block entire topics from your feed with one click:
+      <footer class="footer" id="footer" hidden>
+        <div class="step-count" id="stepCount"></div>
+        <div class="actions">
+          <button type="button" class="btn" id="backBtn">Back</button>
+          <button type="button" class="btn primary" id="nextBtn">Continue</button>
         </div>
-        <div class="feature-list">
-          <div class="feature-item"><span class="fi-icon">🎮</span><div><b>Games</b> — gameplay, streams, let's plays</div></div>
-          <div class="feature-item"><span class="fi-icon">⚽</span><div><b>Sports</b> — football, UFC, highlights</div></div>
-          <div class="feature-item"><span class="fi-icon">🏛</span><div><b>Politics</b> — news, elections, debates</div></div>
-          <div class="feature-item"><span class="fi-icon">🎵</span><div><b>Music</b> — songs, remixes, clips</div></div>
-          <div class="feature-item"><span class="fi-icon">💻</span><div><b>Tech</b>, <b>Crypto</b>, <b>Kids</b>, <b>News</b>, <b>Movies</b>…</div></div>
-        </div>
-        <div class="slide-text" style="margin-top:14px;font-size:13px;">
-          The extension detects videos by <b>title</b>, <b>channel</b> and <b>description</b>.
-        </div>
-      </div>
-
-      <div class="slide">
-        <div class="slide-icon">🌍</div>
-        <div class="slide-title">Filter by language</div>
-        <div class="slide-text">
-          Don't understand a language? Hide it entirely.
-        </div>
-        <div class="feature-list">
-          <div class="feature-item"><span class="fi-icon">🇷🇺</span><div><b>Hide Russian</b> — removes Cyrillic videos from your feed</div></div>
-          <div class="feature-item"><span class="fi-icon">🇬🇧</span><div><b>Hide English</b> — removes English videos</div></div>
-        </div>
-        <div class="slide-text" style="margin-top:14px;font-size:13px;">
-          Language is auto-detected from the <b>title</b> and <b>channel name</b>
-          using Cyrillic/Latin ratio and common word markers.
-        </div>
-      </div>
-
-      <div class="slide">
-        <div class="slide-icon">🔤</div>
-        <div class="slide-title">Custom block words</div>
-        <div class="slide-text">
-          Have a specific topic you never want to see?<br>
-          Add your own keywords and any video containing them will be hidden.
-        </div>
-        <div class="feature-list">
-          <div class="feature-item"><span class="fi-icon">✏️</span><div>Example: <code>standup</code>, <code>reaction</code>, <code>drama</code></div></div>
-          <div class="feature-item"><span class="fi-icon">⚡</span><div>Applied instantly — no page reload needed</div></div>
-          <div class="feature-item"><span class="fi-icon">🧩</span><div>Works together with category filters</div></div>
-        </div>
-      </div>
-
-      <div class="slide">
-        <div class="slide-icon">📱</div>
-        <div class="slide-title">Shorts & watched videos</div>
-        <div class="slide-text">
-          Get rid of the clutter you've already seen.
-        </div>
-        <div class="feature-list">
-          <div class="feature-item"><span class="fi-icon">🚫</span><div><b>Hide Shorts</b> — removes the entire Shorts shelf and individual Shorts from the feed</div></div>
-          <div class="feature-item"><span class="fi-icon">👁</span><div><b>Hide watched</b> — hides videos you've watched more than 90%</div></div>
-        </div>
-      </div>
-
-      <div class="slide">
-        <div class="slide-icon">📐</div>
-        <div class="slide-title">Video size</div>
-        <div class="slide-text">
-          Adjust how many videos fit in a row — perfect for any screen.
-        </div>
-        <div class="feature-list">
-          <div class="feature-item"><span class="fi-icon">🔹</span><div><b>Small</b> — 6 videos per row</div></div>
-          <div class="feature-item"><span class="fi-icon">🔸</span><div><b>Medium</b> — 4 videos per row</div></div>
-          <div class="feature-item"><span class="fi-icon">🔶</span><div><b>Large</b> — 2 videos per row</div></div>
-          <div class="feature-item"><span class="fi-icon">🎦</span><div><b>Cinema</b> — 1 big video per row, perfect for browsing</div></div>
-        </div>
-      </div>
-
-      <div class="slide">
-        <div class="slide-icon">🛡</div>
-        <div class="slide-title">Ad blocking</div>
-        <div class="slide-text">
-          Built-in ad blocker that removes ads at multiple levels.
-        </div>
-        <div class="feature-list">
-          <div class="feature-item"><span class="fi-icon">📺</span><div>Skips <b>video ads</b> automatically (mutes + fast-forwards + clicks Skip)</div></div>
-          <div class="feature-item"><span class="fi-icon">🧱</span><div>Hides <b>banner ads</b>, promoted videos, merch shelves</div></div>
-          <div class="feature-item"><span class="fi-icon">🚫</span><div>Blocks <b>anti-adblock popups</b> ("Ad blockers violate YouTube's Terms…")</div></div>
-          <div class="feature-item"><span class="fi-icon">🌐</span><div>Blocks requests to <code>doubleclick.net</code>, <code>googlesyndication.com</code> and more</div></div>
-        </div>
-      </div>
-
-      <div class="slide">
-        <div class="slide-icon">⚡</div>
-        <div class="slide-title">Optimization mode</div>
-        <div class="slide-text">
-          Makes YouTube run smoothly even on weak devices and long scrolling sessions.
-        </div>
-        <div class="feature-list">
-          <div class="feature-item"><span class="fi-icon">🎞</span><div><b>Disable animations</b> — removes all transitions and CSS animations</div></div>
-          <div class="feature-item"><span class="fi-icon">📹</span><div><b>Pause preview videos</b> — stops the CPU-hungry hover previews on cards</div></div>
-          <div class="feature-item"><span class="fi-icon">✨</span><div><b>Disable effects</b> — no shadows, blur, ambient mode around the player</div></div>
-          <div class="feature-item"><span class="fi-icon">🔍</span><div><b>Reduce scanning</b> — extension scans the page less often</div></div>
-          <div class="feature-item"><span class="fi-icon">🧠</span><div><b>Virtualize DOM</b> — off-screen cards are removed from rendering, so even 500+ videos scroll at 60 FPS</div></div>
-        </div>
-        <div class="slide-text" style="margin-top:14px;font-size:13px;">
-          Each sub-option can be toggled individually in the popup menu.
-        </div>
-      </div>
-
-      <div class="slide">
-        <div class="slide-icon">💾</div>
-        <div class="slide-title">Profiles & Backup</div>
-        <div class="slide-text">
-          Save different filter presets for different moods.
-        </div>
-        <div class="feature-list">
-          <div class="feature-item"><span class="fi-icon">👤</span><div><b>Profiles</b> — create "Work", "Kids", "Chill" etc. and switch instantly</div></div>
-          <div class="feature-item"><span class="fi-icon">⬇</span><div><b>Export</b> — save all settings & profiles to a JSON file</div></div>
-          <div class="feature-item"><span class="fi-icon">⬆</span><div><b>Import</b> — restore them on any device</div></div>
-        </div>
-      </div>
-
-      <div class="slide">
-        <div class="slide-icon">🚀</div>
-        <div class="slide-title">You're all set!</div>
-        <div class="slide-text">
-          The extension <b>auto-checks for updates</b> every hour from GitHub.
-          You'll see a <span class="badge">NEW</span> badge on the toolbar icon
-          when a new version is available.
-        </div>
-
-        <div class="feedback">
-          💡 Found a bug or have an idea?<br>
-          <a href="https://github.com/Yrashka200/youtube-fliter/issues"
-             target="_blank" rel="noopener">
-            github.com/Yrashka200/youtube-fliter/issues
-          </a>
-        </div>
-
-        <div class="slide-text" style="margin-top:16px;font-size:13px;">
-          Click <b>Get Started</b> to open YouTube and configure the extension
-          from the toolbar icon.
-        </div>
-      </div>
-
-    </div>
-
-    <div class="nav">
-      <button class="btn-secondary btn-ghost" id="skipBtn">Skip</button>
-      <button class="btn-secondary" id="prevBtn">← Back</button>
-      <button class="btn-primary" id="nextBtn">Next →</button>
-    </div>
-
-    <div class="footer">YouTube Feed Filter v<span id="ver">…</span></div>
-  </div>
-
+      </footer>
+    </section>
+    <div class="fine-print">YouTube Feed Filter v<span id="version">…</span> · You can change these settings at any time in the extension popup.</div>
+  </main>
   <script src="welcome.js"></script>
 </body>
 </html>
