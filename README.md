@@ -1,10 +1,6 @@
 # YouTube Feed Filter
 
-> A lightweight and configurable Chrome extension for controlling, filtering, and optimizing the YouTube browsing experience.
-
-[![Manifest V3](https://img.shields.io/badge/Chrome-Manifest%20V3-4285F4?logo=googlechrome\&logoColor=white)](https://developer.chrome.com/docs/extensions/develop/migrate/what-is-mv3)
-[![Version](https://img.shields.io/badge/version-1.4.0-blue)](https://github.com/Yrashka200/youtube-fliter)
-[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+> A lightweight and configurable Chrome extension for controlling, filtering, and optimizing the YouTube browsing experience
 
 ## Overview
 
