@@ -74,12 +74,6 @@ This is useful for users who prefer a traditional long-form YouTube feed and wan
 
 ---
 
-### Watched Video Filtering
-
-The extension can automatically hide videos that have already been watched.
-
-This helps keep recommendation feeds focused on content that has not yet been viewed.
-
 ---
 
 ### Video Layout Control
