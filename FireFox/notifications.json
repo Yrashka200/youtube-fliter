@@ -1,0 +1,12 @@
+{
+  "notifications": [
+    {
+      "id": "welcome-001",
+      "date": "2026-09-26",
+      "title": "Welcome!",
+      "message": "Thank you for installing YouTube Feed Filter! This project is free and open source on GitHub: GitHub.",
+      "link": "https://github.com/Yrashka200/youtube-fliter",
+      "linkText": "GitHub"
+    }
+  ]
+}

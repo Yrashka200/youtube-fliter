@@ -1,0 +1,378 @@
+html[data-yt-size="small"] ytd-rich-grid-renderer {
+  --ytd-rich-grid-items-per-row: 6 !important;
+}
+html[data-yt-size="small"] ytd-rich-grid-media #thumbnail,
+html[data-yt-size="small"] ytd-rich-item-renderer #thumbnail {
+  border-radius: 8px;
+}
+html[data-yt-size="small"] ytd-watch-flexy {
+  --ytd-watch-flexy-sidebar-width: 320px !important;
+  --ytd-watch-flexy-sidebar-min-width: 320px !important;
+  --ytd-watch-flexy-min-player-height: auto !important;
+}
+html[data-yt-size="small"] ytd-watch-next-secondary-results-renderer {
+  --ytd-compact-video-renderer-width: 130px !important;
+}
+
+html[data-yt-size="medium"] ytd-rich-grid-renderer {
+  --ytd-rich-grid-items-per-row: 4 !important;
+}
+html[data-yt-size="medium"] ytd-watch-flexy {
+  --ytd-watch-flexy-sidebar-width: 402px !important;
+  --ytd-watch-flexy-sidebar-min-width: 402px !important;
+}
+html[data-yt-size="medium"] ytd-watch-next-secondary-results-renderer {
+  --ytd-compact-video-renderer-width: 168px !important;
+}
+
+html[data-yt-size="large"] ytd-rich-grid-renderer {
+  --ytd-rich-grid-items-per-row: 2 !important;
+}
+html[data-yt-size="large"] ytd-watch-flexy {
+  --ytd-watch-flexy-sidebar-width: 550px !important;
+  --ytd-watch-flexy-sidebar-min-width: 550px !important;
+}
+html[data-yt-size="large"] ytd-watch-next-secondary-results-renderer {
+  --ytd-compact-video-renderer-width: 240px !important;
+}
+html[data-yt-size="large"] ytd-compact-video-renderer #thumbnail {
+  border-radius: 12px;
+}
+
+html[data-yt-size="cinema"] ytd-rich-grid-renderer {
+  --ytd-rich-grid-items-per-row: 1 !important;
+  --ytd-rich-grid-item-max-width: 1200px !important;
+}
+html[data-yt-size="cinema"] ytd-rich-grid-media #thumbnail {
+  border-radius: 16px;
+}
+html[data-yt-size="cinema"] ytd-watch-flexy {
+  --ytd-watch-flexy-sidebar-width: 720px !important;
+  --ytd-watch-flexy-sidebar-min-width: 720px !important;
+}
+html[data-yt-size="cinema"] ytd-watch-next-secondary-results-renderer {
+  --ytd-compact-video-renderer-width: 300px !important;
+}
+html[data-yt-size="cinema"] ytd-compact-video-renderer #thumbnail {
+  border-radius: 14px;
+}
+
+html[data-yt-pip-disabled="1"] .ytp-pip-button {
+  display: none !important;
+}
+
+.ytp-right-controls .yt-filter-pip-button svg {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+.ytp-right-controls .yt-filter-pip-button[aria-pressed="true"] {
+  color: #3ea6ff;
+}
+
+html[data-yt-block-banners="1"] ytd-promoted-sparkles-web-renderer,
+html[data-yt-block-banners="1"] ytd-promoted-video-renderer,
+html[data-yt-block-banners="1"] ytd-display-ad-renderer,
+html[data-yt-block-banners="1"] ytd-ad-slot-renderer,
+html[data-yt-block-banners="1"] ytd-in-feed-ad-layout-renderer,
+html[data-yt-block-banners="1"] ytd-banner-promo-renderer,
+html[data-yt-block-banners="1"] ytd-statement-banner-renderer,
+html[data-yt-block-banners="1"] ytd-brand-video-shelf-renderer,
+html[data-yt-block-banners="1"] ytd-brand-video-singleton-renderer,
+html[data-yt-block-banners="1"] ytd-compact-promoted-video-renderer,
+html[data-yt-block-banners="1"] ytd-compact-promoted-item-renderer,
+html[data-yt-block-banners="1"] ytm-promoted-sparkles-web-renderer,
+html[data-yt-block-banners="1"] ytm-promoted-video-renderer,
+html[data-yt-block-banners="1"] ad-slot-renderer,
+html[data-yt-block-banners="1"] #player-ads,
+html[data-yt-block-banners="1"] #masthead-ad,
+html[data-yt-block-banners="1"] #offer-module,
+html[data-yt-block-banners="1"] ytd-merch-shelf-renderer {
+  display: none !important;
+}
+
+html[data-yt-block-video="1"] #movie_player.ad-showing .ytp-ad-module,
+html[data-yt-block-video="1"] #movie_player.ad-interrupting .ytp-ad-module {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+html[data-yt-block-video="1"] .video-ads,
+html[data-yt-block-video="1"] .ytp-ad-overlay-container,
+html[data-yt-block-video="1"] .ytp-ad-progress-list,
+html[data-yt-block-video="1"] .ytp-ad-player-overlay {
+  display: none !important;
+}
+
+html[data-yt-opt-anim="1"] *,
+html[data-yt-opt-anim="1"] *::before,
+html[data-yt-opt-anim="1"] *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+
+html[data-yt-opt-fx="1"] * {
+  box-shadow: none !important;
+  text-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+html[data-yt-opt-fx="1"] #cinematics,
+html[data-yt-opt-fx="1"] #cinematics-container,
+html[data-yt-opt-fx="1"] .ytp-cinematics,
+html[data-yt-opt-fx="1"] ytd-moving-thumbnail-renderer,
+html[data-yt-opt-fx="1"] ytd-video-preview,
+html[data-yt-opt-fx="1"] #video-preview-container {
+  display: none !important;
+}
+
+html[data-yt-opt-video="1"] ytd-thumbnail video,
+html[data-yt-opt-video="1"] ytd-moving-thumbnail-renderer video,
+html[data-yt-opt-video="1"] ytd-video-preview video {
+  display: none !important;
+}
+
+html[data-yt-opt-anim="1"] .yt-spec-skeleton,
+html[data-yt-opt-anim="1"] tp-yt-paper-spinner,
+html[data-yt-opt-anim="1"] yt-img-shadow img[src*="animated"] {
+  animation: none !important;
+}
+
+html[data-yt-opt-video="1"] [data-yt-placeholder] {
+  contain: strict;
+  content-visibility: auto;
+}
+
+html[data-yt-opt-anim="1"] ytd-miniplayer *,
+html[data-yt-opt-anim="1"] ytd-miniplayer *::before,
+html[data-yt-opt-anim="1"] ytd-miniplayer *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+}
+
+html[data-yt-opt-fx="1"] ytd-miniplayer * {
+  box-shadow: none !important;
+  text-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+html[data-yt-opt-video="1"] ytd-miniplayer video {
+  preload: none;
+}
+
+/* ===== Custom background ===== */
+
+html[data-yt-fake-premium="1"] .yt-filter-premium-badge {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 0;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 1;
+  color: #fff;
+  white-space: nowrap;
+  letter-spacing: -0.055em;
+  background: transparent;
+}
+
+html[data-yt-fake-premium="1"] .yt-filter-premium-icon {
+  width: 38px;
+  height: 27px;
+  flex: 0 0 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 7px;
+  background: #ff0033;
+  color: #fff;
+  font-size: 19px;
+  font-weight: 900;
+}
+
+html[data-yt-fake-premium="1"] .yt-filter-premium-badge .yt-filter-premium-text {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.055em;
+}
+
+html[data-yt-fake-premium="1"] body,
+html[data-yt-custom-bg="1"] body,
+html[data-yt-custom-bg="1"] ytd-app {
+  background-image: var(--yt-custom-bg-url) !important;
+  background-size: cover !important;
+  background-position: center center !important;
+  background-attachment: fixed !important;
+  background-repeat: no-repeat !important;
+}
+
+html[data-yt-custom-bg="1"] ytd-app {
+  background-color: transparent !important;
+}
+
+/* Затемнение */
+html[data-yt-custom-bg="1"][data-yt-bg-dim="1"] body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Blur */
+html[data-yt-custom-bg="1"][data-yt-bg-blur="1"] body::before {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Основные контейнеры — прозрачные */
+html[data-yt-custom-bg="1"] ytd-rich-grid-renderer,
+html[data-yt-custom-bg="1"] ytd-watch-flexy,
+html[data-yt-custom-bg="1"] #content,
+html[data-yt-custom-bg="1"] #page-manager,
+html[data-yt-custom-bg="1"] ytd-browse {
+  background: transparent !important;
+}
+
+/* Карточки видео */
+html[data-yt-custom-bg="1"] ytd-rich-item-renderer,
+html[data-yt-custom-bg="1"] ytd-video-renderer,
+html[data-yt-custom-bg="1"] ytd-compact-video-renderer,
+html[data-yt-custom-bg="1"] yt-lockup-view-model {
+  background: rgba(15, 15, 15, 0.72) !important;
+  border-radius: 12px;
+  padding: 6px;
+}
+
+/* ===== Верхняя шапка ===== */
+html[data-yt-custom-bg="1"] #masthead-container,
+html[data-yt-custom-bg="1"] ytd-masthead,
+html[data-yt-custom-bg="1"] #masthead {
+  background: rgba(15, 15, 15, 0.6) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+html[data-yt-custom-bg="1"] ytd-masthead #background,
+html[data-yt-custom-bg="1"] #masthead-container #background {
+  background: transparent !important;
+}
+
+/* Поиск */
+html[data-yt-custom-bg="1"] ytd-searchbox #container,
+html[data-yt-custom-bg="1"] ytd-searchbox form,
+html[data-yt-custom-bg="1"] .ytd-searchbox {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+html[data-yt-custom-bg="1"] ytd-searchbox input,
+html[data-yt-custom-bg="1"] #search-input {
+  background: transparent !important;
+  color: #fff !important;
+}
+
+html[data-yt-custom-bg="1"] ytd-searchbox #search-icon-legacy,
+html[data-yt-custom-bg="1"] button#search-icon-legacy {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+/* ===== Боковая панель (гайд) ===== */
+html[data-yt-custom-bg="1"] ytd-mini-guide-renderer,
+html[data-yt-custom-bg="1"] #mini-guide,
+html[data-yt-custom-bg="1"] tp-yt-app-drawer#guide,
+html[data-yt-custom-bg="1"] #guide-content,
+html[data-yt-custom-bg="1"] ytd-guide-renderer,
+html[data-yt-custom-bg="1"] #guide-inner-content,
+html[data-yt-custom-bg="1"] ytd-guide-renderer #sections {
+  background: rgba(15, 15, 15, 0.72) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+html[data-yt-custom-bg="1"] tp-yt-app-drawer#guide #scrim,
+html[data-yt-custom-bg="1"] tp-yt-app-drawer#guide #backdrop {
+  background: rgba(0, 0, 0, 0.5) !important;
+}
+
+html[data-yt-custom-bg="1"] ytd-guide-entry-renderer,
+html[data-yt-custom-bg="1"] ytd-mini-guide-entry-renderer,
+html[data-yt-custom-bg="1"] ytd-guide-entry-renderer[active] #endpoint,
+html[data-yt-custom-bg="1"] ytd-guide-entry-renderer #endpoint {
+  background: transparent !important;
+}
+
+html[data-yt-custom-bg="1"] ytd-guide-entry-renderer:hover,
+html[data-yt-custom-bg="1"] ytd-guide-entry-renderer[active],
+html[data-yt-custom-bg="1"] ytd-mini-guide-entry-renderer:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-radius: 10px;
+}
+
+html[data-yt-custom-bg="1"] ytd-guide-section-renderer #items,
+html[data-yt-custom-bg="1"] ytd-guide-section-renderer {
+  background: transparent !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+html[data-yt-custom-bg="1"] ytd-guide-renderer #footer,
+html[data-yt-custom-bg="1"] #guide-renderer #footer {
+  background: transparent !important;
+}
+
+html[data-yt-custom-bg="1"] ytd-guide-entry-renderer yt-icon,
+html[data-yt-custom-bg="1"] ytd-guide-entry-renderer #endpoint,
+html[data-yt-custom-bg="1"] ytd-guide-entry-renderer yt-formatted-string {
+  color: #fff !important;
+}
+
+/* ===== Сайдбар на странице просмотра ===== */
+html[data-yt-custom-bg="1"] #secondary,
+html[data-yt-custom-bg="1"] ytd-watch-next-secondary-results-renderer {
+  background: transparent !important;
+}
+
+/* ===== Комментарии ===== */
+html[data-yt-custom-bg="1"] ytd-comments,
+html[data-yt-custom-bg="1"] #comments {
+  background: rgba(15, 15, 15, 0.6) !important;
+  border-radius: 12px;
+  padding: 8px;
+}
+
+/* ===== Чипсы (фильтры сверху главной) ===== */
+html[data-yt-custom-bg="1"] ytd-feed-filter-chip-bar-renderer,
+html[data-yt-custom-bg="1"] #chips-wrapper,
+html[data-yt-custom-bg="1"] yt-chip-cloud-renderer {
+  background: transparent !important;
+}
+
+html[data-yt-custom-bg="1"] yt-chip-cloud-chip-renderer,
+html[data-yt-custom-bg="1"] .ytChipShapeChip {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  color: #fff !important;
+}
+
+html[data-yt-custom-bg="1"] yt-chip-cloud-chip-renderer[selected],
+html[data-yt-custom-bg="1"] .ytChipShapeChip.selected {
+  background: rgba(255, 255, 255, 0.9) !important;
+  color: #000 !important;
+}
+
+/* Скроллбар */
+html[data-yt-custom-bg="1"] ::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+html[data-yt-custom-bg="1"] ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15) !important;
+}
+html[data-yt-custom-bg="1"] ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25) !important;
+}
