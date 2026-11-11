@@ -45,6 +45,11 @@
     }
     h1 { margin: 10px 0 8px; font-size: clamp(26px, 5vw, 36px); letter-spacing: -.035em; }
     .lead { margin: 0; color: #b7b8bf; font-size: 15px; line-height: 1.65; }
+    .version-comparison { display: flex; align-items: center; gap: 14px; margin-top: 22px; }
+    .version-comparison > div { display: grid; gap: 5px; }
+    .version-label { color: #92949b; font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+    .version-value { color: #f5f5f5; font-size: 14px; }
+    .version-arrow { color: #ff7777; font-size: 20px; }
     main { padding: 8px 38px 34px; }
     .entry { padding: 22px 0; border-top: 1px solid #2d2e33; }
     .entry:first-child { border-top: 0; }
@@ -53,6 +58,7 @@
     .date { color: #92949b; font-size: 12px; }
     .entry-body { margin-top: 12px; color: #c9c9ce; font-size: 14px; line-height: 1.7; }
     .entry-body h2 { margin: 18px 0 6px; color: #f5f5f5; font-size: 15px; }
+    .changes-title { margin: 0; color: #f5f5f5; font-size: 17px; }
     .entry-body ul { margin: 6px 0 12px; padding-left: 22px; }
     .entry-body li { margin-bottom: 4px; }
     .entry-body code { padding: 2px 5px; border-radius: 4px; background: #303137; }
@@ -74,15 +80,40 @@
     <div class="brand">YouTube Feed Filter</div>
     <section class="card" aria-labelledby="pageTitle">
       <header>
-        <div class="eyebrow">Thanks for updating</div>
-        <h1 id="pageTitle">What's new</h1>
-        <p class="lead">Thank you for using YouTube Feed Filter. Here's what's changed recently.</p>
+        <div class="eyebrow">Update complete</div>
+        <h1 id="pageTitle">YouTube Feed Filter has been updated!</h1>
+        <p class="lead">Here are the changes in this version.</p>
+        <div class="version-comparison" aria-label="Version update">
+          <div>
+            <span class="version-label">Old version</span>
+            <strong class="version-value" id="oldVersion">Unknown</strong>
+          </div>
+          <span class="version-arrow" aria-hidden="true">→</span>
+          <div>
+            <span class="version-label">New version</span>
+            <strong class="version-value" id="newVersion">…</strong>
+          </div>
+        </div>
       </header>
       <main id="changelog" aria-live="polite">
-        <div class="status">Loading release notes…</div>
-      </main>
-      <footer>Open source on <a href="https://github.com/Yrashka200/youtube-fliter" target="_blank" rel="noopener">GitHub</a>.</footer>
+        <h2 class="changes-title">Changes</h2>
+        <section class="entry">
+          <div class="entry-body">
+            <h2>Added</h2>
+            <ul>
+              <li>New What's New page with changelog information.</li>
+            </ul>
+
+        <h2>Fixed</h2>
+        <ul>
+          <li>What's New page not displaying correctly on some devices and without correct infrormation.</li>
+        </ul>
+      </div>
     </section>
+  </main>
+  <footer>Open source on <a href="https://github.com/Yrashka200/youtube-fliter" target="_blank" rel="noopener">GitHub</a>.</footer>
+</body>
+</html>
   </div>
   <script src="whats-new.js"></script>
 </body>

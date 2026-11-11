@@ -114,6 +114,7 @@ async function checkForUpdates() {
       hasUpdate,
       downloadUrl: null,
       changelogEntries: visibleEntries,
+      allChangelogEntries: entries,
       notifications,
       error: null
     };
@@ -139,6 +140,7 @@ async function checkForUpdates() {
       hasUpdate: false,
       downloadUrl: null,
       changelogEntries: [],
+      allChangelogEntries: [],
       changelogError: err.message,
       notifications: localNotifications,
       error: err.message

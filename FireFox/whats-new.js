@@ -18,8 +18,24 @@ function appendMarkdownInline(container, text) {
 
 function renderChangelog(state) {
   const container = document.getElementById("changelog");
-  const entries = Array.isArray(state?.changelogEntries) ? state.changelogEntries : [];
-  if (!entries.length) {
+  const entries = Array.isArray(state?.allChangelogEntries)
+    ? state.allChangelogEntries
+    : Array.isArray(state?.changelogEntries)
+      ? state.changelogEntries
+      : [];
+  const releaseVersion = document.getElementById("newVersion").textContent;
+  const entry = entries.find((item) => item.version === releaseVersion);
+  if (!entry) {
+    if (container.querySelector(".entry")) {
+      const status = document.createElement("div");
+      status.className = "status" + (state?.changelogError ? " error" : "");
+      status.textContent = state?.changelogError
+        ? `Could not load updated release notes. Showing bundled notes. (${state.changelogError})`
+        : `No release notes found for v${releaseVersion}. Showing bundled notes.`;
+      container.appendChild(status);
+      return;
+    }
+
     const status = document.createElement("div");
     status.className = "status" + (state?.changelogError ? " error" : "");
     status.textContent = state?.changelogError
@@ -29,57 +45,44 @@ function renderChangelog(state) {
     return;
   }
 
-  const nodes = entries.map((entry) => {
-    const section = document.createElement("section");
-    section.className = "entry";
-
-    const header = document.createElement("div");
-    header.className = "entry-head";
-    const version = document.createElement("span");
-    version.className = "version";
-    version.textContent = `v${entry.version}`;
-    header.appendChild(version);
-    if (entry.date) {
-      const date = document.createElement("span");
-      date.className = "date";
-      date.textContent = entry.date;
-      header.appendChild(date);
-    }
-
-    const body = document.createElement("div");
-    body.className = "entry-body";
-    let list;
-    String(entry.body || "").split(/\r?\n/).forEach((line) => {
-      const heading = line.match(/^###\s+(.+)$/);
-      const item = line.match(/^\s*[-*]\s+(.+)$/);
-      if (heading) {
-        list = null;
-        const element = document.createElement("h2");
-        appendMarkdownInline(element, heading[1]);
-        body.appendChild(element);
-      } else if (item) {
-        if (!list) {
-          list = document.createElement("ul");
-          body.appendChild(list);
-        }
-        const element = document.createElement("li");
-        appendMarkdownInline(element, item[1]);
-        list.appendChild(element);
-      } else if (line) {
-        list = null;
-        if (body.childNodes.length) body.appendChild(document.createElement("br"));
-        appendMarkdownInline(body, line);
-      } else {
-        list = null;
-        if (body.childNodes.length) body.appendChild(document.createElement("br"));
+  const section = document.createElement("section");
+  section.className = "entry";
+  const body = document.createElement("div");
+  body.className = "entry-body";
+  let list;
+  String(entry.body || "").split(/\r?\n/).forEach((line) => {
+    const heading = line.match(/^###\s+(.+)$/);
+    const item = line.match(/^\s*[-*]\s+(.+)$/);
+    if (heading) {
+      list = null;
+      const element = document.createElement("h2");
+      appendMarkdownInline(element, heading[1]);
+      body.appendChild(element);
+    } else if (item) {
+      if (!list) {
+        list = document.createElement("ul");
+        body.appendChild(list);
       }
-    });
-
-    section.append(header, body);
-    return section;
+      const element = document.createElement("li");
+      appendMarkdownInline(element, item[1]);
+      list.appendChild(element);
+    } else if (line) {
+      list = null;
+      if (body.childNodes.length) body.appendChild(document.createElement("br"));
+      appendMarkdownInline(body, line);
+    } else {
+      list = null;
+      if (body.childNodes.length) body.appendChild(document.createElement("br"));
+    }
   });
-  container.replaceChildren(...nodes);
+  section.append(body);
+  container.replaceChildren(container.querySelector(".changes-title"), section);
 }
+
+const releaseParams = new URLSearchParams(location.search);
+document.getElementById("oldVersion").textContent = releaseParams.get("from") || "Unknown";
+document.getElementById("newVersion").textContent =
+  releaseParams.get("to") || browser.runtime.getManifest().version;
 
 browser.runtime.sendMessage({ type: "checkForUpdates" }).then(
   renderChangelog,

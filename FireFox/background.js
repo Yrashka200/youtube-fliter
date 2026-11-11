@@ -74,8 +74,11 @@ browser.runtime.onInstalled.addListener((details) => {
       url: browser.runtime.getURL("welcome.html")
     });
   } else if (details.reason === "update") {
+    const whatsNewUrl = new URL(browser.runtime.getURL("whats-new.html"));
+    whatsNewUrl.searchParams.set("from", details.previousVersion || "Unknown");
+    whatsNewUrl.searchParams.set("to", browser.runtime.getManifest().version);
     browser.tabs.create({
-      url: browser.runtime.getURL("whats-new.html")
+      url: whatsNewUrl.href
     }).catch((error) => {
       console.error("Could not open the What's New page:", error);
     });

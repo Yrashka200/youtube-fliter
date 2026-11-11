@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "YouTube Feed Filter",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Filter YouTube recommendations by topic, language, customize video size and block ads",
   "browser_specific_settings": {
     "gecko": {

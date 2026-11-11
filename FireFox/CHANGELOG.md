@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.6.0]
+
+### Added
+- Guided first-run setup for configuring filters and creating a profile
+- Local YouTube watch-time statistics in the extension popup
+
+### Changed
+- Settings backups now include profiles and themes
 
 ## [1.5.0] - 2026-10-07
 ## Changes:
