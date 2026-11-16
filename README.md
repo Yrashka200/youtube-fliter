@@ -2,6 +2,10 @@
 
 > A lightweight and configurable Chrome extension for controlling, filtering, and optimizing the YouTube browsing experience
 
+
+## Download now for Mozila https://addons.mozilla.org/en-US/developers/addon/youtube-feed-filter200/edit
+
+
 ## Overview
 
 **YouTube Feed Filter** is a browser extension designed to give users greater control over the content displayed on YouTube.
