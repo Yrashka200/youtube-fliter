@@ -3,7 +3,7 @@
 > A lightweight and configurable Chrome extension for controlling, filtering, and optimizing the YouTube browsing experience
 
 
-## Download now for Mozila https://addons.mozilla.org/en-US/developers/addon/youtube-feed-filter200/edit
+## Download now for Mozila https://addons.mozilla.org/en-US/developers/addon/youtube-feed-filter200
 
 
 ## Overview
