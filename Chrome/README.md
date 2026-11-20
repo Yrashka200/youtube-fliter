@@ -1,9 +1,10 @@
 # YouTube Feed Filter
 
-> A lightweight and configurable Chrome extension for controlling, filtering, and optimizing the YouTube browsing experience
+> A lightweight and configurable Chrome extension for controlling, filtering, and optimizing the YouTube browsing experience.
 
-
-## Download now for Mozila https://addons.mozilla.org/en-US/firefox/addon/youtube-feed-filter200/
+[![Manifest V3](https://img.shields.io/badge/Chrome-Manifest%20V3-4285F4?logo=googlechrome\&logoColor=white)](https://developer.chrome.com/docs/extensions/develop/migrate/what-is-mv3)
+[![Version](https://img.shields.io/badge/version-1.4.0-blue)](https://github.com/Yrashka200/youtube-fliter)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
 ## Overview
 
@@ -76,6 +77,12 @@ YouTube Shorts can be hidden independently from other filtering rules.
 This is useful for users who prefer a traditional long-form YouTube feed and want to remove short-form content from their browsing experience.
 
 ---
+
+### Watched Video Filtering
+
+The extension can automatically hide videos that have already been watched.
+
+This helps keep recommendation feeds focused on content that has not yet been viewed.
 
 ---
 

@@ -1,0 +1,267 @@
+/* ============================================================
+   ANIMATIONS.CSS — современные анимации YouTube (GPU-friendly)
+   Активны только когда оптимизация ВЫКЛЮЧЕНА.
+   Используются ТОЛЬКО transform и opacity — никаких layout-анимаций.
+   ============================================================ */
+
+/* ---------- Базовые переменные ---------- */
+html:not([data-yt-opt-anim="1"]) {
+  --yt-anim-fast: 140ms;
+  --yt-anim-base: 220ms;
+  --yt-anim-slow: 340ms;
+  --yt-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --yt-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --yt-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Уважаем prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  html:not([data-yt-opt-anim="1"]) *,
+  html:not([data-yt-opt-anim="1"]) *::before,
+  html:not([data-yt-opt-anim="1"]) *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================================
+   1. КАРТОЧКИ ВИДЕО — плавный hover-подъём + scale
+   ============================================================ */
+html:not([data-yt-opt-anim="1"]) ytd-rich-item-renderer,
+html:not([data-yt-opt-anim="1"]) ytd-video-renderer,
+html:not([data-yt-opt-anim="1"]) ytd-grid-video-renderer,
+html:not([data-yt-opt-anim="1"]) ytd-compact-video-renderer,
+html:not([data-yt-opt-anim="1"]) yt-lockup-view-model,
+html:not([data-yt-opt-anim="1"]) ytd-rich-grid-media {
+  transition:
+    transform var(--yt-anim-base) var(--yt-ease-out),
+    opacity var(--yt-anim-base) var(--yt-ease-out);
+  backface-visibility: hidden;
+  will-change: auto;
+}
+
+html:not([data-yt-opt-anim="1"]) ytd-rich-item-renderer:hover,
+html:not([data-yt-opt-anim="1"]) ytd-video-renderer:hover,
+html:not([data-yt-opt-anim="1"]) ytd-grid-video-renderer:hover,
+html:not([data-yt-opt-anim="1"]) ytd-compact-video-renderer:hover,
+html:not([data-yt-opt-anim="1"]) yt-lockup-view-model:hover {
+  transform: translateY(-4px) scale(1.012);
+  will-change: transform;
+}
+
+/* Плавное появление карточек после фильтрации */
+html:not([data-yt-opt-anim="1"]) ytd-rich-item-renderer[data-yt-filter-processed]:not([data-yt-filter-hidden]),
+html:not([data-yt-opt-anim="1"]) ytd-video-renderer[data-yt-filter-processed]:not([data-yt-filter-hidden]) {
+  animation: ytFadeInUp var(--yt-anim-slow) var(--yt-ease-out) both;
+}
+
+@keyframes ytFadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================================
+   2. ПРЕВЬЮ-ТУМБНЕЙЛЫ — плавный zoom при hover
+   ============================================================ */
+html:not([data-yt-opt-anim="1"]) ytd-thumbnail img,
+html:not([data-yt-opt-anim="1"]) yt-image img,
+html:not([data-yt-opt-anim="1"]) #thumbnail img {
+  transition: transform var(--yt-anim-slow) var(--yt-ease-out);
+}
+
+html:not([data-yt-opt-anim="1"]) ytd-rich-item-renderer:hover #thumbnail img,
+html:not([data-yt-opt-anim="1"]) ytd-video-renderer:hover #thumbnail img,
+html:not([data-yt-opt-anim="1"]) ytd-compact-video-renderer:hover #thumbnail img,
+html:not([data-yt-opt-anim="1"]) yt-lockup-view-model:hover img {
+  transform: scale(1.045);
+}
+
+/* ============================================================
+   3. КНОПКИ — плавное нажатие + hover
+   ============================================================ */
+html:not([data-yt-opt-anim="1"]) ytd-button-renderer button,
+html:not([data-yt-opt-anim="1"]) tp-yt-paper-button,
+html:not([data-yt-opt-anim="1"]) yt-button-shape button,
+html:not([data-yt-opt-anim="1"]) button.yt-spec-button-shape-next {
+  transition:
+    transform var(--yt-anim-fast) var(--yt-ease-spring),
+    background-color var(--yt-anim-fast) var(--yt-ease-out),
+    opacity var(--yt-anim-fast) var(--yt-ease-out);
+}
+
+html:not([data-yt-opt-anim="1"]) ytd-button-renderer button:hover,
+html:not([data-yt-opt-anim="1"]) tp-yt-paper-button:hover,
+html:not([data-yt-opt-anim="1"]) yt-button-shape button:hover {
+  transform: translateY(-1px);
+}
+
+html:not([data-yt-opt-anim="1"]) ytd-button-renderer button:active,
+html:not([data-yt-opt-anim="1"]) tp-yt-paper-button:active,
+html:not([data-yt-opt-anim="1"]) yt-button-shape button:active {
+  transform: scale(0.96);
+}
+
+html:not([data-yt-opt-anim="1"]) ytd-toggle-button-renderer button:active,
+html:not([data-yt-opt-anim="1"]) #top-level-buttons-computed button:active {
+  transform: scale(0.9);
+}
+
+/* ============================================================
+   4. ЧИПСЫ (фильтры над главной)
+   ============================================================ */
+html:not([data-yt-opt-anim="1"]) yt-chip-cloud-chip-renderer,
+html:not([data-yt-opt-anim="1"]) .ytChipShapeChip {
+  transition:
+    transform var(--yt-anim-fast) var(--yt-ease-out),
+    background-color var(--yt-anim-fast) var(--yt-ease-out),
+    color var(--yt-anim-fast) var(--yt-ease-out);
+}
+
+html:not([data-yt-opt-anim="1"]) yt-chip-cloud-chip-renderer:hover,
+html:not([data-yt-opt-anim="1"]) .ytChipShapeChip:hover {
+  transform: translateY(-1px);
+}
+
+html:not([data-yt-opt-anim="1"]) yt-chip-cloud-chip-renderer:active {
+  transform: scale(0.95);
+}
+
+/* ============================================================
+   5. БОКОВОЕ МЕНЮ (guide)
+   ============================================================ */
+html:not([data-yt-opt-anim="1"]) ytd-guide-entry-renderer,
+html:not([data-yt-opt-anim="1"]) ytd-mini-guide-entry-renderer {
+  transition:
+    background-color var(--yt-anim-fast) var(--yt-ease-out),
+    transform var(--yt-anim-fast) var(--yt-ease-out);
+  border-radius: 10px;
+}
+
+html:not([data-yt-opt-anim="1"]) ytd-guide-entry-renderer:hover,
+html:not([data-yt-opt-anim="1"]) ytd-mini-guide-entry-renderer:hover {
+  transform: translateX(2px);
+}
+
+html:not([data-yt-opt-anim="1"]) ytd-mini-guide-entry-renderer[active],
+html:not([data-yt-opt-anim="1"]) ytd-guide-entry-renderer[active] {
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* ============================================================
+   6. ПЛЕЕР — плавное появление контролов
+   ============================================================ */
+html:not([data-yt-opt-anim="1"]) #movie_player .ytp-chrome-bottom,
+html:not([data-yt-opt-anim="1"]) #movie_player .ytp-chrome-top {
+  transition: opacity var(--yt-anim-base) var(--yt-ease-out);
+}
+
+html:not([data-yt-opt-anim="1"]) .ytp-play-button,
+html:not([data-yt-opt-anim="1"]) .ytp-next-button,
+html:not([data-yt-opt-anim="1"]) .ytp-prev-button,
+html:not([data-yt-opt-anim="1"]) .ytp-volume-area button,
+html:not([data-yt-opt-anim="1"]) .ytp-settings-button,
+html:not([data-yt-opt-anim="1"]) .ytp-fullscreen-button {
+  transition: transform var(--yt-anim-fast) var(--yt-ease-spring);
+}
+
+html:not([data-yt-opt-anim="1"]) .ytp-play-button:active,
+html:not([data-yt-opt-anim="1"]) .ytp-next-button:active,
+html:not([data-yt-opt-anim="1"]) .ytp-settings-button:active {
+  transform: scale(0.88);
+}
+
+html:not([data-yt-opt-anim="1"]) #movie_player video {
+  transition: opacity var(--yt-anim-slow) var(--yt-ease-out);
+}
+
+/* ============================================================
+   7. МОДАЛЬНЫЕ ОКНА / ПОПАПЫ
+   ============================================================ */
+html:not([data-yt-opt-anim="1"]) tp-yt-paper-dialog,
+html:not([data-yt-opt-anim="1"]) ytd-popup-container tp-yt-iron-dropdown,
+html:not([data-yt-opt-anim="1"]) yt-dialog,
+html:not([data-yt-opt-anim="1"]) yt-confirm-dialog-renderer {
+  animation: ytModalIn var(--yt-anim-base) var(--yt-ease-out) both;
+}
+
+@keyframes ytModalIn {
+  from {
+    opacity: 0;
+    transform: scale(0.94) translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+html:not([data-yt-opt-anim="1"]) tp-yt-iron-dropdown {
+  animation: ytDropdownIn var(--yt-anim-fast) var(--yt-ease-out) both;
+}
+
+@keyframes ytDropdownIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ============================================================
+   8. ПОЛОСА ПРОГРЕССА ПРОСМОТРА
+   ============================================================ */
+html:not([data-yt-opt-anim="1"]) #progress.ytd-thumbnail-overlay-resume-playback-renderer,
+html:not([data-yt-opt-anim="1"]) ytd-thumbnail-overlay-resume-playback-renderer #progress {
+  transition: width var(--yt-anim-slow) var(--yt-ease-out);
+}
+
+/* ============================================================
+   9. СКЕЛЕТОНЫ ЗАГРУЗКИ — мягкий pulse
+   ============================================================ */
+html:not([data-yt-opt-anim="1"]) yt-skeleton-renderer,
+html:not([data-yt-opt-anim="1"]) .yt-spec-skeleton {
+  animation: ytPulse 1.6s var(--yt-ease-in-out) infinite;
+}
+
+@keyframes ytPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+
+/* ============================================================
+   10. КОММЕНТАРИИ — плавное появление
+   ============================================================ */
+html:not([data-yt-opt-anim="1"]) ytd-comment-thread-renderer,
+html:not([data-yt-opt-anim="1"]) ytd-comment-view-model {
+  animation: ytFadeIn var(--yt-anim-base) var(--yt-ease-out) both;
+}
+
+@keyframes ytFadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   11. СКРОЛЛ-БАР — плавный hover
+   ============================================================ */
+html:not([data-yt-opt-anim="1"]) ::-webkit-scrollbar-thumb {
+  transition: background-color var(--yt-anim-fast) var(--yt-ease-out);
+}
+
+/* ============================================================
+   12. Кнопка подписки — лёгкий "pop" при клике
+   ============================================================ */
+html:not([data-yt-opt-anim="1"]) #subscribe-button button:active,
+html:not([data-yt-opt-anim="1"]) ytd-subscribe-button-renderer button:active {
+  transform: scale(0.94);
+}

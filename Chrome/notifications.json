@@ -1,0 +1,12 @@
+{
+  "notifications": [
+    {
+      "id": "welcome-001",
+      "date": "2026-09-26",
+      "title": "Welcome!",
+      "message": "Hi! Thank you for installing this extension! This extension is 100% free and Open Source, so please subscribe to the author: x.com/Yrashka200",
+      "link": "https://x.com/Yrashka200",
+      "linkText": "x.com/Yrashka200"
+    }
+  ]
+}
